@@ -39,10 +39,28 @@ The full breakdown of Flurry Systems architecture is available here:
 ---
 
 Flurry Systems is in early architecture and documentation development.  
-Next steps include:
-- Building foundational APIs for Flurry Architect  
-- Developing the first App Suite module  
-- Integrating the Library as a versioned resource hub  
+## ✅ Next Steps — Development Tracker
+
+- [ ] **Initialize project structure for Flurry Architect**
+  - Create `/src/architect/` folder and placeholder logic file.
+- [ ] **Define core AI modules**
+  - Outline System Intelligence, API Orchestration, and Adaptive Flow Rules.
+- [ ] **Set up App Suite framework**
+  - Scaffold `/src/app-suite/` with shared config.
+- [ ] **Draft Library data model**
+  - Create schema for templates and automation assets.
+- [ ] **Connect diagram + doc updates**
+  - Add links in README and `system-architecture.md` to versioned diagrams.
+- [ ] **Prepare GitHub Pages docs**
+  - Configure `/docs` branch for Flurry Systems public documentation.
+- [ ] **Publish MVP progress log**
+  - Start logging weekly milestones inside `/docs/dev-log.md`.
+
+---
+
+### 🧭 Development Notes
+> All next steps align with the Flurry Systems vision: build adaptive, balanced tools through intentional design and iteration.  
+> Each checklist item becomes a commit milestone as the ecosystem grows.
 
 ---
 
@@ -59,4 +77,5 @@ Flurry Systems exists to merge **productivity**, **intentional design**, and **A
 ---
 
 © 2025 Flurry Systems. Designed by Krystle Mitchell.
+
 
