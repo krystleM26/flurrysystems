@@ -24,8 +24,19 @@ The full breakdown of Flurry Systems architecture is available here:
 ![Flurry Systems Architecture](./docs/images/flurry-architecture-diagram.png)
 
 ---
+## 🚀 Current Phase — Q4 2025 Roadmap
 
-## 🚀 Current Phase
+| Stage | Focus | Description |
+|--------|--------|-------------|
+| **1. Architecture Documentation** | ✅ Completed | Established the system foundation and created architecture diagram + documentation. |
+| **2. Repository Setup** | ✅ Completed | Configured GitHub structure with `docs`, `src`, and initial README. |
+| **3. Core AI Design** | 🧠 In Progress | Developing the **Flurry Architect** logic model (system intelligence + adaptive flow rules). |
+| **4. App Suite Prototype** | ⚙️ Planned | Building first App Suite module: dashboard + user input layer for testing flows. |
+| **5. Library Integration** | 📚 Planned | Creating the template and automation repository that connects to Architect. |
+| **6. Deployment + Feedback** | ⏳ Upcoming | Deploying MVP architecture to live environment for internal testing and iteration. |
+
+
+---
 
 Flurry Systems is in early architecture and documentation development.  
 Next steps include:
@@ -48,3 +59,4 @@ Flurry Systems exists to merge **productivity**, **intentional design**, and **A
 ---
 
 © 2025 Flurry Systems. Designed by Krystle Mitchell.
+
