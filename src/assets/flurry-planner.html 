@@ -1,0 +1,535 @@
+import React, { useState } from 'react';
+import { Rocket, Target, DollarSign, Users, CheckCircle, Lightbulb, Zap } from 'lucide-react';
+
+const FlurryBusinessPlanner = () => {
+  const [activeSection, setActiveSection] = useState('overview');
+  const [formData, setFormData] = useState({
+    targetIndustries: [],
+    initialCapacity: '2-3',
+    pricePoint: 'starter',
+    focusArea: ''
+  });
+
+  const sections = [
+    { id: 'overview', name: 'Overview', icon: Rocket },
+    { id: 'services', name: 'Service Design', icon: Target },
+    { id: 'pricing', name: 'Pricing Model', icon: DollarSign },
+    { id: 'clients', name: 'First Clients', icon: Users },
+    { id: 'tools', name: 'Tools & Stack', icon: Zap },
+    { id: 'launch', name: 'Launch Plan', icon: CheckCircle }
+  ];
+
+  const industries = [
+    'Professional Services', 'Real Estate', 'Healthcare', 'E-commerce',
+    'Marketing Agencies', 'Legal', 'Finance', 'SaaS Companies'
+  ];
+
+  const toggleIndustry = (industry) => {
+    setFormData(prev => ({
+      ...prev,
+      targetIndustries: prev.targetIndustries.includes(industry)
+        ? prev.targetIndustries.filter(i => i !== industry)
+        : [...prev.targetIndustries, industry]
+    }));
+  };
+
+  const renderContent = () => {
+    switch(activeSection) {
+      case 'overview':
+        return (
+          <div className="space-y-6">
+            <div className="bg-blue-50 border-l-4 border-blue-500 p-6 rounded">
+              <h3 className="text-xl font-semibold text-blue-900 mb-2">Your Business Foundation</h3>
+              <p className="text-blue-800">Flurry Systems will help organizations integrate AI into their daily workflows through subscription-based implementation and support.</p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div className="text-3xl font-bold text-indigo-600 mb-2">$500-5k+</div>
+                <div className="text-sm text-gray-600">Monthly recurring revenue per client</div>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div className="text-3xl font-bold text-indigo-600 mb-2">10-15hrs</div>
+                <div className="text-sm text-gray-600">Weekly time commitment to start</div>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div className="text-3xl font-bold text-indigo-600 mb-2">2-3</div>
+                <div className="text-sm text-gray-600">Initial clients recommended</div>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-lg mb-3">Your Value Proposition</h4>
+              <div className="space-y-3">
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="text-green-500 mt-1 flex-shrink-0" size={20} />
+                  <div>
+                    <div className="font-medium">Practical Implementation</div>
+                    <div className="text-sm text-gray-600">You do not just consult - you actually build and deploy AI solutions</div>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="text-green-500 mt-1 flex-shrink-0" size={20} />
+                  <div>
+                    <div className="font-medium">Ongoing Optimization</div>
+                    <div className="text-sm text-gray-600">Monthly reviews and adjustments ensure clients get continuous value</div>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="text-green-500 mt-1 flex-shrink-0" size={20} />
+                  <div>
+                    <div className="font-medium">Team Training</div>
+                    <div className="text-sm text-gray-600">You ensure adoption through hands-on training and documentation</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'services':
+        return (
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold mb-4">Core Service Components</h3>
+            
+            <div className="space-y-4">
+              <div className="bg-white p-5 rounded-lg border-l-4 border-purple-500">
+                <h4 className="font-semibold text-lg mb-2">1. Discovery & Workflow Audit (Week 1)</h4>
+                <p className="text-gray-700 mb-3">Interview key team members, map current workflows, identify AI opportunities with highest ROI potential.</p>
+                <div className="bg-gray-50 p-3 rounded text-sm">
+                  <strong>Deliverable:</strong> Workflow analysis document with 3-5 prioritized AI implementation opportunities
+                </div>
+              </div>
+
+              <div className="bg-white p-5 rounded-lg border-l-4 border-blue-500">
+                <h4 className="font-semibold text-lg mb-2">2. AI Solution Design (Week 2)</h4>
+                <p className="text-gray-700 mb-3">Design custom AI agents and integrations, select appropriate tools and platforms, create implementation roadmap.</p>
+                <div className="bg-gray-50 p-3 rounded text-sm">
+                  <strong>Deliverable:</strong> Technical implementation plan with tool selections and timeline
+                </div>
+              </div>
+
+              <div className="bg-white p-5 rounded-lg border-l-4 border-green-500">
+                <h4 className="font-semibold text-lg mb-2">3. Implementation (Weeks 3-4)</h4>
+                <p className="text-gray-700 mb-3">Build and configure AI agents, integrate with existing tools, test workflows thoroughly, create documentation.</p>
+                <div className="bg-gray-50 p-3 rounded text-sm">
+                  <strong>Deliverable:</strong> Deployed AI solutions with user documentation
+                </div>
+              </div>
+
+              <div className="bg-white p-5 rounded-lg border-l-4 border-orange-500">
+                <h4 className="font-semibold text-lg mb-2">4. Training & Handoff (Week 5)</h4>
+                <p className="text-gray-700 mb-3">Conduct hands-on training sessions, provide SOPs and guides, establish success metrics.</p>
+                <div className="bg-gray-50 p-3 rounded text-sm">
+                  <strong>Deliverable:</strong> Trained team with operational AI workflows
+                </div>
+              </div>
+
+              <div className="bg-white p-5 rounded-lg border-l-4 border-indigo-500">
+                <h4 className="font-semibold text-lg mb-2">5. Ongoing Support (Monthly)</h4>
+                <p className="text-gray-700 mb-3">Monthly optimization reviews, troubleshooting support, updates for new AI capabilities, performance reporting.</p>
+                <div className="bg-gray-50 p-3 rounded text-sm">
+                  <strong>Deliverable:</strong> Monthly report with metrics, improvements, and recommendations
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+              <div className="flex items-start space-x-3">
+                <Lightbulb className="text-amber-600 mt-1" size={24} />
+                <div>
+                  <strong className="text-amber-900">Pro Tip:</strong>
+                  <p className="text-amber-800 text-sm mt-1">Start with one workflow type and perfect it. Then replicate this proven solution across multiple clients before expanding to other workflow types.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'pricing':
+        return (
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold mb-4">Subscription Pricing Tiers</h3>
+
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className={`bg-white p-6 rounded-lg border-2 ${formData.pricePoint === 'starter' ? 'border-indigo-500' : 'border-gray-200'} cursor-pointer`}
+                   onClick={() => setFormData({...formData, pricePoint: 'starter'})}>
+                <div className="text-center mb-4">
+                  <div className="text-3xl font-bold text-gray-900">$750</div>
+                  <div className="text-sm text-gray-500">per month</div>
+                </div>
+                <h4 className="font-semibold text-lg mb-3 text-center">Starter</h4>
+                <ul className="space-y-2 text-sm">
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle size={16} className="text-green-500" />
+                    <span>1-2 AI workflows</span>
+                  </li>
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle size={16} className="text-green-500" />
+                    <span>Initial setup & training</span>
+                  </li>
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle size={16} className="text-green-500" />
+                    <span>Email support</span>
+                  </li>
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle size={16} className="text-green-500" />
+                    <span>Monthly optimization</span>
+                  </li>
+                </ul>
+                <div className="mt-4 text-xs text-gray-500 text-center">Best for: Small businesses, solopreneurs</div>
+              </div>
+
+              <div className={`bg-white p-6 rounded-lg border-2 ${formData.pricePoint === 'professional' ? 'border-indigo-500' : 'border-gray-200'} cursor-pointer relative`}
+                   onClick={() => setFormData({...formData, pricePoint: 'professional'})}>
+                <div className="absolute top-0 right-0 bg-indigo-500 text-white text-xs px-3 py-1 rounded-bl-lg rounded-tr-lg">
+                  POPULAR
+                </div>
+                <div className="text-center mb-4">
+                  <div className="text-3xl font-bold text-gray-900">$2,500</div>
+                  <div className="text-sm text-gray-500">per month</div>
+                </div>
+                <h4 className="font-semibold text-lg mb-3 text-center">Professional</h4>
+                <ul className="space-y-2 text-sm">
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle size={16} className="text-green-500" />
+                    <span>3-5 AI workflows</span>
+                  </li>
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle size={16} className="text-green-500" />
+                    <span>Custom AI agents</span>
+                  </li>
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle size={16} className="text-green-500" />
+                    <span>Priority support</span>
+                  </li>
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle size={16} className="text-green-500" />
+                    <span>Bi-weekly check-ins</span>
+                  </li>
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle size={16} className="text-green-500" />
+                    <span>Performance reporting</span>
+                  </li>
+                </ul>
+                <div className="mt-4 text-xs text-gray-500 text-center">Best for: Growing companies, agencies</div>
+              </div>
+
+              <div className={`bg-white p-6 rounded-lg border-2 ${formData.pricePoint === 'enterprise' ? 'border-indigo-500' : 'border-gray-200'} cursor-pointer`}
+                   onClick={() => setFormData({...formData, pricePoint: 'enterprise'})}>
+                <div className="text-center mb-4">
+                  <div className="text-3xl font-bold text-gray-900">$5,000+</div>
+                  <div className="text-sm text-gray-500">per month</div>
+                </div>
+                <h4 className="font-semibold text-lg mb-3 text-center">Enterprise</h4>
+                <ul className="space-y-2 text-sm">
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle size={16} className="text-green-500" />
+                    <span>Unlimited workflows</span>
+                  </li>
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle size={16} className="text-green-500" />
+                    <span>Dedicated support</span>
+                  </li>
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle size={16} className="text-green-500" />
+                    <span>Weekly optimization</span>
+                  </li>
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle size={16} className="text-green-500" />
+                    <span>Multi-department rollout</span>
+                  </li>
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle size={16} className="text-green-500" />
+                    <span>Custom integrations</span>
+                  </li>
+                </ul>
+                <div className="mt-4 text-xs text-gray-500 text-center">Best for: Large organizations</div>
+              </div>
+            </div>
+
+            <div className="bg-blue-50 p-4 rounded-lg">
+              <h4 className="font-semibold mb-2">One-Time Setup Fee</h4>
+              <p className="text-sm text-gray-700">Consider charging a one-time setup fee equal to 1-2 months of subscription for initial discovery, implementation, and training.</p>
+              <div className="mt-3 grid grid-cols-3 gap-3 text-sm">
+                <div><strong>Starter:</strong> $750-1,500</div>
+                <div><strong>Professional:</strong> $2,500-5,000</div>
+                <div><strong>Enterprise:</strong> $5,000-10,000</div>
+              </div>
+            </div>
+
+            <div className="bg-green-50 p-4 rounded-lg">
+              <h4 className="font-semibold mb-2 text-green-900">Revenue Projections</h4>
+              <p className="text-sm text-gray-700 mb-3">Based on starting with 3 clients at Starter tier:</p>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span>Month 1-3: 3 Starter clients</span>
+                  <span className="font-semibold">$2,250/month</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Month 4-6: 2 Starter + 3 Professional</span>
+                  <span className="font-semibold">$9,000/month</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Month 7-12: 3 Starter + 5 Professional + 1 Enterprise</span>
+                  <span className="font-semibold">$19,750/month</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'clients':
+        return (
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold mb-4">Finding Your First Clients</h3>
+
+            <div>
+              <h4 className="font-semibold mb-3">Select Target Industries (choose 2-3):</h4>
+              <div className="grid md:grid-cols-2 gap-2">
+                {industries.map(industry => (
+                  <div
+                    key={industry}
+                    onClick={() => toggleIndustry(industry)}
+                    className={`p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                      formData.targetIndustries.includes(industry)
+                        ? 'border-indigo-500 bg-indigo-50'
+                        : 'border-gray-200 bg-white hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium">{industry}</span>
+                      {formData.targetIndustries.includes(industry) && (
+                        <CheckCircle className="text-indigo-500" size={20} />
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {formData.targetIndustries.length > 0 && (
+              <div className="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
+                <h4 className="font-semibold text-indigo-900 mb-2">
+                  Your Focus: {formData.targetIndustries.join(', ')}
+                </h4>
+                <p className="text-sm text-indigo-800">
+                  Great choice! Now develop 2-3 specific use cases for AI in these industries.
+                </p>
+              </div>
+            )}
+
+            <div>
+              <h4 className="font-semibold mb-3">Client Acquisition Strategy</h4>
+              <div className="space-y-4">
+                <div className="bg-white p-4 rounded-lg border border-gray-200">
+                  <h5 className="font-semibold mb-2">1. LinkedIn Outreach (Weeks 1-2)</h5>
+                  <p className="text-sm text-gray-700 mb-2">Identify 50-100 decision-makers in your target industries. Share valuable content and reach out with personalized messages.</p>
+                  <div className="bg-gray-50 p-2 rounded text-xs">
+                    <strong>Template:</strong> Hi [Name], I noticed [Company] is in [industry]. I help businesses save 10-15 hours per week by automating [specific workflow]. Open to a 15-minute chat?
+                  </div>
+                </div>
+
+                <div className="bg-white p-4 rounded-lg border border-gray-200">
+                  <h5 className="font-semibold mb-2">2. Free Workflow Audit (Weeks 2-4)</h5>
+                  <p className="text-sm text-gray-700">Offer 5 free 30-minute workflow audits. Identify 2-3 AI opportunities. Convert 40-60% to paid clients.</p>
+                </div>
+
+                <div className="bg-white p-4 rounded-lg border border-gray-200">
+                  <h5 className="font-semibold mb-2">3. Industry-Specific Content</h5>
+                  <p className="text-sm text-gray-700">Create LinkedIn posts and case studies showing specific AI implementations in your target industries.</p>
+                </div>
+
+                <div className="bg-white p-4 rounded-lg border border-gray-200">
+                  <h5 className="font-semibold mb-2">4. Referral Network</h5>
+                  <p className="text-sm text-gray-700">Partner with complementary service providers who can refer clients. Offer 10-15% referral fees.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'tools':
+        return (
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold mb-4">Your AI Implementation Stack</h3>
+
+            <div className="space-y-4">
+              <div className="bg-white p-5 rounded-lg border-l-4 border-blue-500">
+                <h4 className="font-semibold text-lg mb-3">AI Platforms & APIs</h4>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between items-center">
+                    <span><strong>Claude API</strong> - Complex reasoning, document analysis</span>
+                    <span className="text-gray-500">~$0.01/query</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span><strong>OpenAI API</strong> - GPT-4 for versatile tasks</span>
+                    <span className="text-gray-500">~$0.02/query</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span><strong>Make.com or Zapier</strong> - Workflow automation</span>
+                    <span className="text-gray-500">$29-69/month</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-5 rounded-lg border-l-4 border-green-500">
+                <h4 className="font-semibold text-lg mb-3">Agent Building Tools</h4>
+                <div className="space-y-2 text-sm">
+                  <div><strong>Relevance AI</strong> - Build and deploy AI agents without code</div>
+                  <div><strong>LangChain</strong> - For custom agent development</div>
+                  <div><strong>Voiceflow</strong> - Conversational AI agents</div>
+                  <div><strong>n8n</strong> - Open-source workflow automation</div>
+                </div>
+              </div>
+
+              <div className="bg-white p-5 rounded-lg border-l-4 border-purple-500">
+                <h4 className="font-semibold text-lg mb-3">Integration & Data Tools</h4>
+                <div className="space-y-2 text-sm">
+                  <div><strong>Airtable</strong> - Database for agent data</div>
+                  <div><strong>Google Workspace APIs</strong> - Gmail, Docs, Sheets</div>
+                  <div><strong>Slack API</strong> - Deploy agents in workspaces</div>
+                  <div><strong>CRM APIs</strong> - HubSpot, Salesforce integrations</div>
+                </div>
+              </div>
+
+              <div className="bg-white p-5 rounded-lg border-l-4 border-orange-500">
+                <h4 className="font-semibold text-lg mb-3">Client Management</h4>
+                <div className="space-y-2 text-sm">
+                  <div><strong>Notion</strong> - Project management and client portal</div>
+                  <div><strong>Loom</strong> - Training videos</div>
+                  <div><strong>Calendly</strong> - Client scheduling</div>
+                  <div><strong>Stripe</strong> - Subscription billing</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h4 className="font-semibold mb-3">Estimated Monthly Tool Costs</h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span>Starter (3 clients):</span>
+                  <span className="font-semibold">$150-250/month</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Growth (8 clients):</span>
+                  <span className="font-semibold">$300-500/month</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Scale (15 clients):</span>
+                  <span className="font-semibold">$500-800/month</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'launch':
+        return (
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold mb-4">90-Day Launch Plan</h3>
+
+            <div className="space-y-4">
+              <div className="bg-white p-5 rounded-lg border-l-4 border-indigo-500">
+                <div className="flex justify-between items-start mb-3">
+                  <h4 className="font-semibold text-lg">Month 1: Foundation</h4>
+                  <span className="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded">Weeks 1-4</span>
+                </div>
+                <div className="space-y-3 text-sm">
+                  <div>
+                    <div className="font-medium mb-1">Week 1: Setup</div>
+                    <ul className="list-disc list-inside text-gray-700 space-y-1 ml-2">
+                      <li>Register business, set up Stripe</li>
+                      <li>Create LinkedIn profile</li>
+                      <li>Set up basic website</li>
+                      <li>Choose 2-3 target industries</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div className="font-medium mb-1">Week 2: Tool Mastery</div>
+                    <ul className="list-disc list-inside text-gray-700 space-y-1 ml-2">
+                      <li>Set up Make.com and Claude API</li>
+                      <li>Build 2-3 demo workflows</li>
+                      <li>Create templates</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div className="font-medium mb-1">Week 3-4: Outreach</div>
+                    <ul className="list-disc list-inside text-gray-700 space-y-1 ml-2">
+                      <li>Identify 50 potential clients</li>
+                      <li>Share 3-4 valuable posts</li>
+                      <li>Offer 5 free workflow audits</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-5 rounded-lg border-l-4 border-green-500">
+                <div className="flex justify-between items-start mb-3">
+                  <h4 className="font-semibold text-lg">Month 2: First Clients</h4>
+                  <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Weeks 5-8</span>
+                </div>
+                <div className="space-y-3 text-sm">
+                  <div>
+                    <div className="font-medium mb-1">Week 5-6: Onboarding</div>
+                    <ul className="list-disc list-inside text-gray-700 space-y-1 ml-2">
+                      <li>Sign 2-3 clients at Starter tier</li>
+                      <li>Complete workflow audits</li>
+                      <li>Begin implementation</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div className="font-medium mb-1">Week 7-8: Implementation</div>
+                    <ul className="list-disc list-inside text-gray-700 space-y-1 ml-2">
+                      <li>Deploy first AI workflows</li>
+                      <li>Document what works</li>
+                      <li>Create case study drafts</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-5 rounded-lg border-l-4 border-purple-500">
+                <div className="flex justify-between items-start mb-3">
+                  <h4 className="font-semibold text-lg">Month 3: Scale</h4>
+                  <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">Weeks 9-12</span>
+                </div>
+                <div className="space-y-3 text-sm">
+                  <div>
+                    <div className="font-medium mb-1">Week 9-10: Optimization</div>
+                    <ul className="list-disc list-inside text-gray-700 space-y-1 ml-2">
+                      <li>Refine processes based on feedback</li>
+                      <li>Create reusable templates</li>
+                      <li>Publish case studies</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div className="font-medium mb-1">Week 11-12: Growth</div>
+                    <ul className="list-disc list-inside text-gray-700 space-y-1 ml-2">
+                      <li>Target 2-3 Professional tier clients</li>
+                      <li>Build referral partnerships</li>
+                      <li>Plan for next quarter</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+              <h4 className="font-semibold text-green-900 mb-2">Success Milestones</h4>
+              <div className="space-y-2 text-sm text-green-800">
+                <div className="flex items-center space-x-2">
+                  <CheckCircle size={16} />
+                  <span>Month 1: Tools set up, 5 audits completed</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle size={16} />
+                  <span>Month 2: 2-3 paying clients, first workflows live</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle size={16} />
+                  <span>Month 3: 5+ clients, proven process, case studies published</span>
+                </div>
+              </div>
+            </div>
+          </div
