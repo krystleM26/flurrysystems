@@ -1,0 +1,19 @@
+# Environment variables — never commit
+.env
+.env.*
+
+# Private keys — never commit
+*.pem
+*.key
+
+# macOS
+.DS_Store
+
+# PDF documents (business filings etc.)
+*.pdf
+
+# Zip archives
+*.zip
+
+# Node (if added later)
+node_modules/

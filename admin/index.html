@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Flurry Systems</title>
+  <!-- Quill rich text editor -->
+  <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --snow: #F8FAFC;
+      --glacier: #38BDF8;
+      --deep-glacier: #0EA5E9;
+      --ocean: #0284C7;
+      --s100: #F1F5F9;
+      --s200: #E2E8F0;
+      --s300: #CBD5E1;
+      --s400: #94A3B8;
+      --s500: #64748B;
+      --s600: #475569;
+      --s700: #334155;
+      --s800: #1E293B;
+      --s900: #0F172A;
+      --white: #FFFFFF;
+      --green: #10B981;
+      --red: #EF4444;
+      --font: 'Inter', -apple-system, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { height: 100%; }
+
+    body {
+      font-family: var(--font);
+      background: var(--snow);
+      color: var(--s800);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Login screen ─────────────────────────── */
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(140deg, var(--s900), var(--s800), #1b3a5c);
+    }
+
+    .login-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 48px 44px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 20px 60px rgba(15,23,42,.3);
+    }
+
+    .login-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .login-logo svg { width: 32px; height: 32px; color: var(--glacier); }
+    .login-logo span { font-size: 17px; font-weight: 700; color: var(--s800); }
+
+    .login-card h1 { font-size: 22px; font-weight: 800; color: var(--s800); margin-bottom: 6px; }
+    .login-card p  { font-size: 14px; color: var(--s500); margin-bottom: 28px; }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--s600);
+      margin-bottom: 6px;
+    }
+    .field input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--s200);
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: var(--font);
+      color: var(--s800);
+      background: var(--snow);
+      outline: none;
+      transition: border-color .18s;
+    }
+    .field input:focus { border-color: var(--glacier); }
+    .field { margin-bottom: 20px; }
+
+    .btn-full {
+      width: 100%;
+      padding: 13px;
+      background: var(--glacier);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: var(--font);
+      cursor: pointer;
+      transition: background .18s;
+      margin-top: 4px;
+    }
+    .btn-full:hover { background: var(--deep-glacier); }
+    .btn-full:disabled { opacity: .6; cursor: not-allowed; }
+
+    .login-error {
+      color: var(--red);
+      font-size: 13px;
+      margin-top: 12px;
+      text-align: center;
+      display: none;
+    }
+
+    /* ── Admin shell ──────────────────────────── */
+    #adminShell { display: none; min-height: 100vh; flex-direction: column; }
+
+    /* Top bar */
+    .topbar {
+      background: var(--s900);
+      padding: 0 28px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .topbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--white);
+    }
+    .topbar-logo svg { width: 26px; height: 26px; color: var(--glacier); }
+    .topbar-logo span { font-size: 15px; font-weight: 700; }
+    .topbar-badge {
+      background: rgba(56,189,248,.15);
+      color: var(--glacier);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 100px;
+      border: 1px solid rgba(56,189,248,.25);
+      margin-left: 10px;
+    }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .topbar-link {
+      color: var(--s400);
+      font-size: 13px;
+      text-decoration: none;
+      transition: color .18s;
+    }
+    .topbar-link:hover { color: var(--white); }
+    .btn-logout {
+      background: transparent;
+      border: 1px solid var(--s700);
+      color: var(--s400);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: var(--font);
+      cursor: pointer;
+      transition: all .18s;
+    }
+    .btn-logout:hover { border-color: var(--s500); color: var(--white); }
+
+    /* Layout */
+    .admin-body { display: flex; flex: 1; overflow: hidden; }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--white);
+      border-right: 1px solid var(--s200);
+      padding: 20px 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-section {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      color: var(--s400);
+      padding: 0 20px 10px;
+    }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      color: var(--s600);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all .15s;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      font-family: var(--font);
+    }
+    .sidebar-link:hover { background: var(--s100); color: var(--s800); }
+    .sidebar-link.active { background: #F0F9FF; color: var(--ocean); font-weight: 600; }
+    .sidebar-link svg { opacity: .7; }
+
+    /* Main panel */
+    .main-panel { flex: 1; overflow-y: auto; padding: 32px; }
+
+    /* Views */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ── Posts list view ──────────────────────── */
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .panel-title { font-size: 22px; font-weight: 800; color: var(--s800); letter-spacing: -.5px; }
+    .panel-subtitle { font-size: 14px; color: var(--s500); margin-top: 2px; }
+
+    .btn-sm {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: 7px;
+      font-size: 13.5px;
+      font-weight: 600;
+      font-family: var(--font);
+      cursor: pointer;
+      border: none;
+      transition: all .18s;
+    }
+    .btn-primary { background: var(--glacier); color: var(--white); }
+    .btn-primary:hover { background: var(--deep-glacier); }
+    .btn-danger { background: #FEF2F2; color: var(--red); border: 1px solid #FECACA; }
+    .btn-danger:hover { background: #FEE2E2; }
+    .btn-ghost { background: var(--s100); color: var(--s700); }
+    .btn-ghost:hover { background: var(--s200); }
+
+    .posts-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--white);
+      border: 1px solid var(--s200);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .posts-table th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      color: var(--s400);
+      background: var(--s100);
+      border-bottom: 1px solid var(--s200);
+    }
+    .posts-table td {
+      padding: 14px 16px;
+      font-size: 14px;
+      color: var(--s700);
+      border-bottom: 1px solid var(--s100);
+      vertical-align: middle;
+    }
+    .posts-table tr:last-child td { border-bottom: none; }
+    .posts-table tr:hover td { background: var(--snow); }
+
+    .post-title-cell { font-weight: 600; color: var(--s800); }
+    .post-tag-pill {
+      display: inline-block;
+      background: #F0F9FF;
+      color: var(--ocean);
+      border: 1px solid #BAE6FD;
+      border-radius: 100px;
+      padding: 2px 10px;
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+    .post-actions { display: flex; gap: 8px; }
+    .empty-table {
+      text-align: center;
+      padding: 48px;
+      color: var(--s400);
+    }
+    .empty-table p { margin-top: 8px; font-size: 14px; }
+
+    /* ── Editor view ──────────────────────────── */
+    .editor-grid {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 24px;
+      align-items: start;
+    }
+    .editor-main { display: flex; flex-direction: column; gap: 16px; }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--s600);
+      margin-bottom: 6px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--s200);
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: var(--font);
+      color: var(--s800);
+      background: var(--white);
+      outline: none;
+      transition: border-color .18s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--glacier); }
+    .form-group { margin-bottom: 0; }
+
+    .editor-wrap {
+      border: 1.5px solid var(--s200);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--white);
+      transition: border-color .18s;
+    }
+    .editor-wrap:focus-within { border-color: var(--glacier); }
+    .ql-toolbar { border: none !important; border-bottom: 1px solid var(--s200) !important; background: var(--snow); }
+    .ql-container { border: none !important; font-family: var(--font) !important; font-size: 15px !important; }
+    .ql-editor { min-height: 360px; color: var(--s800); line-height: 1.8; }
+    .ql-editor.ql-blank::before { color: var(--s400); font-style: normal; }
+
+    /* Sidebar panel */
+    .sidebar-panel {
+      background: var(--white);
+      border: 1px solid var(--s200);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .sidebar-panel-header {
+      padding: 14px 16px;
+      background: var(--s100);
+      border-bottom: 1px solid var(--s200);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--s600);
+      letter-spacing: .3px;
+    }
+    .sidebar-panel-body { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--s600);
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--s300); flex-shrink: 0; }
+    .dot.green { background: var(--green); }
+
+    .publish-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--glacier);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: var(--font);
+      cursor: pointer;
+      transition: background .18s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .publish-btn:hover { background: var(--deep-glacier); }
+    .publish-btn:disabled { opacity: .6; cursor: not-allowed; }
+
+    .save-draft-btn {
+      width: 100%;
+      padding: 10px;
+      background: var(--s100);
+      color: var(--s600);
+      border: 1px solid var(--s200);
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      font-family: var(--font);
+      cursor: pointer;
+      transition: all .18s;
+    }
+    .save-draft-btn:hover { background: var(--s200); }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--s800);
+      color: var(--white);
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 8px 24px rgba(15,23,42,.25);
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all .3s ease;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { background: #064E3B; }
+    .toast.error   { background: #7F1D1D; }
+  </style>
+</head>
+<body>
+
+  <!-- ── Login Screen ──────────────────────────────────────────────────── -->
+  <div id="loginScreen">
+    <div class="login-card">
+      <div class="login-logo">
+        <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round">
+          <g transform="translate(50,50)">
+            <line x1="0" y1="-43" x2="0" y2="43" stroke-width="6"/>
+            <line x1="0" y1="-43" x2="0" y2="43" stroke-width="6" transform="rotate(60)"/>
+            <line x1="0" y1="-43" x2="0" y2="43" stroke-width="6" transform="rotate(120)"/>
+            <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="4.5"/>
+            <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="4.5"/>
+            <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="4.5" transform="rotate(60)"/>
+            <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="4.5" transform="rotate(60)"/>
+            <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="4.5" transform="rotate(120)"/>
+            <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="4.5" transform="rotate(120)"/>
+            <circle r="6" fill="currentColor" stroke="none"/>
+          </g>
+        </svg>
+        <span>Flurry Systems</span>
+      </div>
+      <h1>Admin Login</h1>
+      <p>Enter your password to access the blog editor.</p>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="••••••••••••" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn-full" id="loginBtn">Sign In</button>
+        <p class="login-error" id="loginError">Incorrect password. Please try again.</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── Admin Shell ───────────────────────────────────────────────────── -->
+  <div id="adminShell">
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <div style="display:flex;align-items:center;">
+        <a href="../index.html" target="_blank" class="topbar-logo">
+          <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round">
+            <g transform="translate(50,50)">
+              <line x1="0" y1="-43" x2="0" y2="43" stroke-width="6"/>
+              <line x1="0" y1="-43" x2="0" y2="43" stroke-width="6" transform="rotate(60)"/>
+              <line x1="0" y1="-43" x2="0" y2="43" stroke-width="6" transform="rotate(120)"/>
+              <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="4.5"/>
+              <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="4.5"/>
+              <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="4.5" transform="rotate(60)"/>
+              <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="4.5" transform="rotate(60)"/>
+              <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="4.5" transform="rotate(120)"/>
+              <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="4.5" transform="rotate(120)"/>
+            </g>
+          </svg>
+          <span>Flurry Systems</span>
+        </a>
+        <span class="topbar-badge">Admin</span>
+      </div>
+      <div class="topbar-right">
+        <a href="../blog.html" target="_blank" class="topbar-link">View Blog ↗</a>
+        <button class="btn-logout" onclick="handleLogout()">Sign Out</button>
+      </div>
+    </header>
+
+    <div class="admin-body">
+
+      <!-- Sidebar -->
+      <nav class="sidebar">
+        <p class="sidebar-section">Content</p>
+        <button class="sidebar-link active" id="navPosts" onclick="showView('posts')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          All Posts
+        </button>
+        <button class="sidebar-link" id="navNew" onclick="showView('editor'); resetEditor()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New Post
+        </button>
+      </nav>
+
+      <!-- Main content -->
+      <main class="main-panel">
+
+        <!-- Posts list -->
+        <div class="view active" id="viewPosts">
+          <div class="panel-header">
+            <div>
+              <h1 class="panel-title">Blog Posts</h1>
+              <p class="panel-subtitle">Manage your published posts</p>
+            </div>
+            <button class="btn-sm btn-primary" onclick="showView('editor'); resetEditor()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              New Post
+            </button>
+          </div>
+
+          <table class="posts-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Tag</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="postsTableBody">
+              <tr><td colspan="4" class="empty-table">
+                <svg width="32" height="32" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round" style="opacity:.3;color:#94A3B8;">
+                  <g transform="translate(50,50)">
+                    <line x1="0" y1="-40" x2="0" y2="40" stroke-width="5"/>
+                    <line x1="0" y1="-40" x2="0" y2="40" stroke-width="5" transform="rotate(60)"/>
+                    <line x1="0" y1="-40" x2="0" y2="40" stroke-width="5" transform="rotate(120)"/>
+                  </g>
+                </svg>
+                <p>No posts yet. Write your first one!</p>
+              </td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Editor -->
+        <div class="view" id="viewEditor">
+          <div class="panel-header">
+            <div>
+              <h1 class="panel-title" id="editorTitle">New Post</h1>
+              <p class="panel-subtitle">Write and publish a blog post</p>
+            </div>
+            <button class="btn-sm btn-ghost" onclick="showView('posts')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              Back
+            </button>
+          </div>
+
+          <div class="editor-grid">
+            <div class="editor-main">
+              <div class="form-group">
+                <label for="postTitle">Title</label>
+                <input type="text" id="postTitle" placeholder="Your post title..." oninput="updateEditorStatus()">
+              </div>
+
+              <div class="form-group">
+                <label for="postExcerpt">Excerpt <span style="font-weight:400;color:var(--s400);">(shown on blog listing)</span></label>
+                <input type="text" id="postExcerpt" placeholder="A short summary of this post...">
+              </div>
+
+              <div class="form-group">
+                <label>Content</label>
+                <div class="editor-wrap">
+                  <div id="quillEditor"></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:16px;">
+              <div class="sidebar-panel">
+                <div class="sidebar-panel-header">Publish</div>
+                <div class="sidebar-panel-body">
+                  <div class="status-indicator">
+                    <span class="dot green" id="statusDot"></span>
+                    <span id="statusText">Ready to publish</span>
+                  </div>
+                  <button class="publish-btn" id="publishBtn" onclick="handlePublish()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Publish Post
+                  </button>
+                  <button class="save-draft-btn" onclick="showView('posts')">Cancel</button>
+                  <input type="hidden" id="editingPostId" value="">
+                </div>
+              </div>
+
+              <div class="sidebar-panel">
+                <div class="sidebar-panel-header">Category</div>
+                <div class="sidebar-panel-body">
+                  <div class="form-group" style="margin:0;">
+                    <label for="postTag">Tag</label>
+                    <select id="postTag">
+                      <option>Product</option>
+                      <option>Update</option>
+                      <option>Announcement</option>
+                      <option>Tips</option>
+                      <option>Behind the Build</option>
+                      <option>General</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sidebar-panel">
+                <div class="sidebar-panel-header">Post URL</div>
+                <div class="sidebar-panel-body">
+                  <p style="font-size:12px;color:var(--s400);line-height:1.6;" id="slugPreview">
+                    Generated from the title when published.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.quilljs.com/1.3.7/quill.js"></script>
+  <script>
+    // ── Quill setup ───────────────────────────────────────────────────────────
+    const quill = new Quill('#quillEditor', {
+      theme: 'snow',
+      placeholder: 'Start writing your post...',
+      modules: {
+        toolbar: [
+          [{ heading: [2, 3, false] }],
+          ['bold', 'italic', 'underline'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          ['blockquote', 'code-block', 'link'],
+          ['clean']
+        ]
+      }
+    });
+
+    quill.on('text-change', updateEditorStatus);
+
+    // ── State ─────────────────────────────────────────────────────────────────
+    let posts = [];
+
+    // ── Auth ──────────────────────────────────────────────────────────────────
+    async function checkAuth() {
+      const r = await fetch('/api/auth');
+      const d = await r.json();
+      if (d.authenticated) showAdmin();
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const btn = document.getElementById('loginBtn');
+      const err = document.getElementById('loginError');
+      btn.disabled = true;
+      btn.textContent = 'Signing in...';
+      err.style.display = 'none';
+
+      try {
+        const r = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: document.getElementById('password').value })
+        });
+        if (r.ok) {
+          showAdmin();
+        } else {
+          err.style.display = 'block';
+          btn.disabled = false;
+          btn.textContent = 'Sign In';
+          document.getElementById('password').value = '';
+          document.getElementById('password').focus();
+        }
+      } catch {
+        err.textContent = 'Connection error. Is the server running?';
+        err.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Sign In';
+      }
+    }
+
+    async function handleLogout() {
+      await fetch('/api/logout', { method: 'POST' });
+      document.getElementById('adminShell').style.display = 'none';
+      document.getElementById('loginScreen').style.display = 'flex';
+      document.getElementById('password').value = '';
+    }
+
+    function showAdmin() {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminShell').style.display = 'flex';
+      loadPosts();
+    }
+
+    // ── Navigation ────────────────────────────────────────────────────────────
+    function showView(name) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+      document.getElementById('view' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
+      document.getElementById('nav' + (name === 'editor' ? 'New' : 'Posts')).classList.add('active');
+    }
+
+    // ── Posts list ────────────────────────────────────────────────────────────
+    async function loadPosts() {
+      const r = await fetch('/api/posts');
+      posts = await r.json();
+      renderPostsTable();
+    }
+
+    function renderPostsTable() {
+      const tbody = document.getElementById('postsTableBody');
+      if (!posts.length) {
+        tbody.innerHTML = `<tr><td colspan="4" class="empty-table">
+          <svg width="32" height="32" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round" style="opacity:.3;color:#94A3B8;">
+            <g transform="translate(50,50)">
+              <line x1="0" y1="-40" x2="0" y2="40" stroke-width="5"/>
+              <line x1="0" y1="-40" x2="0" y2="40" stroke-width="5" transform="rotate(60)"/>
+              <line x1="0" y1="-40" x2="0" y2="40" stroke-width="5" transform="rotate(120)"/>
+            </g>
+          </svg>
+          <p>No posts yet. Write your first one!</p>
+        </td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = posts.map(p => `
+        <tr>
+          <td class="post-title-cell">${esc(p.title)}</td>
+          <td><span class="post-tag-pill">${esc(p.tag)}</span></td>
+          <td>${esc(p.date)}</td>
+          <td>
+            <div class="post-actions">
+              <button class="btn-sm btn-ghost" onclick="editPost(${p.id})">Edit</button>
+              <button class="btn-sm btn-ghost" onclick="window.open('/posts/${esc(p.filename)}','_blank')">View</button>
+              <button class="btn-sm btn-danger" onclick="deletePost(${p.id}, '${esc(p.title)}')">Delete</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // ── Editor ────────────────────────────────────────────────────────────────
+    function resetEditor() {
+      document.getElementById('postTitle').value = '';
+      document.getElementById('postExcerpt').value = '';
+      document.getElementById('postTag').value = 'Product';
+      document.getElementById('editingPostId').value = '';
+      document.getElementById('editorTitle').textContent = 'New Post';
+      document.getElementById('publishBtn').textContent = '';
+      document.getElementById('publishBtn').innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Publish Post`;
+      quill.setContents([]);
+      updateEditorStatus();
+    }
+
+    function updateEditorStatus() {
+      const hasTitle   = document.getElementById('postTitle').value.trim().length > 0;
+      const hasContent = quill.getLength() > 1;
+      const dot  = document.getElementById('statusDot');
+      const text = document.getElementById('statusText');
+      const slug = document.getElementById('slugPreview');
+      const btn  = document.getElementById('publishBtn');
+
+      if (hasTitle && hasContent) {
+        dot.classList.add('green');
+        text.textContent = 'Ready to publish';
+        btn.disabled = false;
+      } else {
+        dot.classList.remove('green');
+        text.textContent = 'Add a title and content';
+        btn.disabled = true;
+      }
+
+      const title = document.getElementById('postTitle').value.trim();
+      slug.textContent = title
+        ? '/posts/' + title.toLowerCase().replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-').slice(0,60) + '-…'
+        : 'Generated from the title when published.';
+    }
+
+    function editPost(id) {
+      const post = posts.find(p => p.id === id);
+      if (!post) return;
+      showView('editor');
+      document.getElementById('postTitle').value   = post.title;
+      document.getElementById('postExcerpt').value = post.excerpt;
+      document.getElementById('postTag').value      = post.tag;
+      document.getElementById('editingPostId').value = id;
+      document.getElementById('editorTitle').textContent = 'Edit Post';
+      document.getElementById('publishBtn').innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Save Changes`;
+
+      // Load the post HTML to extract body content for editing
+      fetch('/posts/' + post.filename)
+        .then(r => r.text())
+        .then(html => {
+          const match = html.match(/<div class="post-body">([\s\S]*?)<\/div>/);
+          if (match) quill.clipboard.dangerouslyPasteHTML(match[1].trim());
+        });
+
+      updateEditorStatus();
+    }
+
+    async function handlePublish() {
+      const title   = document.getElementById('postTitle').value.trim();
+      const excerpt = document.getElementById('postExcerpt').value.trim();
+      const tag     = document.getElementById('postTag').value;
+      const content = quill.root.innerHTML;
+      const editId  = document.getElementById('editingPostId').value;
+
+      if (!title || quill.getLength() <= 1) return;
+
+      const btn = document.getElementById('publishBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span style="opacity:.7">Saving…</span>';
+
+      try {
+        const isEdit = !!editId;
+        const url    = isEdit ? `/api/posts/${editId}` : '/api/posts';
+        const method = isEdit ? 'PUT' : 'POST';
+
+        const r = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, excerpt, tag, content })
+        });
+
+        const d = await r.json();
+        if (r.ok) {
+          await loadPosts();
+          showView('posts');
+          showToast(isEdit ? 'Post updated!' : 'Post published!', 'success');
+        } else {
+          showToast(d.error || 'Something went wrong', 'error');
+          btn.disabled = false;
+        }
+      } catch {
+        showToast('Connection error', 'error');
+        btn.disabled = false;
+      }
+
+      // Restore button label
+      const isEdit = !!document.getElementById('editingPostId').value;
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        ${isEdit ? 'Save Changes' : 'Publish Post'}`;
+    }
+
+    async function deletePost(id, title) {
+      if (!confirm(`Delete "${title}"? This cannot be undone.`)) return;
+      const r = await fetch(`/api/posts/${id}`, { method: 'DELETE' });
+      if (r.ok) {
+        await loadPosts();
+        showToast('Post deleted', 'success');
+      } else {
+        showToast('Failed to delete', 'error');
+      }
+    }
+
+    // ── Toast ─────────────────────────────────────────────────────────────────
+    let toastTimer;
+    function showToast(msg, type = '') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = `toast ${type}`;
+      clearTimeout(toastTimer);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => t.classList.add('show'));
+      });
+      toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+    function esc(str) {
+      return String(str)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // ── Init ──────────────────────────────────────────────────────────────────
+    checkAuth();
+    updateEditorStatus();
+  </script>
+</body>
+</html>

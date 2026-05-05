@@ -1,383 +1,398 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flurry Systems - AI Integration for Your Business</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-        
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .gradient-text {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .hero-gradient {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flurry Systems — Smart Tools for a Sharper Future</title>
+  <meta name="description" content="Flurry Systems builds focused, powerful tools that help you work smarter, track what matters, and grow with clarity.">
+  <link rel="stylesheet" href="src/css/style.css">
 </head>
-<body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-4">
-            <div class="flex justify-between items-center">
-                <div class="text-2xl font-bold gradient-text">Flurry Systems</div>
-                <a href="#contact" class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-indigo-700 transition">
-                    Get Started
-                </a>
+<body>
+
+  <!-- ── Navigation ─────────────────────────────── -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="Flurry Systems Logo with Snowflake Element copy.png" alt="Flurry Systems" class="nav-logo-icon" style="border-radius:4px;object-fit:contain;">
+        <span class="nav-logo-text">Flurry Systems</span>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="#newsletter" class="nav-cta">Newsletter</a></li>
+      </ul>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+          <line x1="3" y1="6"  x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── Hero ───────────────────────────────────── -->
+  <section class="hero">
+    <!-- Decorative rotating snowflakes -->
+    <svg class="snow-deco" style="width:220px;height:220px;top:-60px;right:4%;animation-duration:48s;" viewBox="0 0 100 100" fill="none" stroke="currentColor" aria-hidden="true">
+      <g transform="translate(50,50)" stroke-linecap="round">
+        <line x1="0" y1="-43" x2="0" y2="43" stroke-width="4"/>
+        <line x1="0" y1="-43" x2="0" y2="43" stroke-width="4" transform="rotate(60)"/>
+        <line x1="0" y1="-43" x2="0" y2="43" stroke-width="4" transform="rotate(120)"/>
+        <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="3"/>
+        <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="3"/>
+        <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="3" transform="rotate(60)"/>
+        <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="3" transform="rotate(60)"/>
+        <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="3" transform="rotate(120)"/>
+        <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="3" transform="rotate(120)"/>
+      </g>
+    </svg>
+    <svg class="snow-deco" style="width:140px;height:140px;bottom:48px;left:6%;animation-duration:30s;animation-direction:reverse;" viewBox="0 0 100 100" fill="none" stroke="currentColor" aria-hidden="true">
+      <g transform="translate(50,50)" stroke-linecap="round">
+        <line x1="0" y1="-43" x2="0" y2="43" stroke-width="4"/>
+        <line x1="0" y1="-43" x2="0" y2="43" stroke-width="4" transform="rotate(60)"/>
+        <line x1="0" y1="-43" x2="0" y2="43" stroke-width="4" transform="rotate(120)"/>
+        <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="3"/>
+        <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="3"/>
+        <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="3" transform="rotate(60)"/>
+        <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="3" transform="rotate(60)"/>
+        <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="3" transform="rotate(120)"/>
+        <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="3" transform="rotate(120)"/>
+      </g>
+    </svg>
+    <svg class="snow-deco" style="width:80px;height:80px;top:30%;left:50%;animation-duration:22s;" viewBox="0 0 100 100" fill="none" stroke="currentColor" aria-hidden="true">
+      <g transform="translate(50,50)" stroke-linecap="round">
+        <line x1="0" y1="-43" x2="0" y2="43" stroke-width="5"/>
+        <line x1="0" y1="-43" x2="0" y2="43" stroke-width="5" transform="rotate(60)"/>
+        <line x1="0" y1="-43" x2="0" y2="43" stroke-width="5" transform="rotate(120)"/>
+      </g>
+    </svg>
+
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <svg width="12" height="12" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="8" aria-hidden="true">
+          <g transform="translate(50,50)">
+            <line x1="0" y1="-40" x2="0" y2="40"/>
+            <line x1="0" y1="-40" x2="0" y2="40" transform="rotate(60)"/>
+            <line x1="0" y1="-40" x2="0" y2="40" transform="rotate(120)"/>
+          </g>
+        </svg>
+        Now Launching
+      </div>
+
+      <h1 class="hero-title">
+        Smart tools for<br>
+        <span>a sharper future</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Flurry Systems builds focused, powerful tools that help you work smarter, track what matters, and grow with clarity.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#products" class="btn btn-primary">
+          Explore Products
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="#newsletter" class="btn btn-outline">Stay Updated</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Products section intro ─────────────────── -->
+  <section class="section" id="products" style="padding-bottom: 0;">
+    <div class="section-inner" style="text-align:center;">
+      <p class="section-label">Our Products</p>
+      <h2 class="section-title" style="margin:0 auto;">Tools that work as hard as you do</h2>
+      <p class="section-subtitle" style="margin:16px auto 0;">Every product we ship is designed to solve a real problem with precision and simplicity.</p>
+    </div>
+  </section>
+
+  <!-- ── Clock Earnings ─────────────────────────── -->
+  <section class="section product-section" style="padding-top: 64px;">
+    <div class="section-inner">
+      <div class="product-grid">
+
+        <!-- Info side -->
+        <div>
+          <span class="product-badge">Featured Product</span>
+          <p class="section-label">Clock Earnings</p>
+          <h2 class="section-title">Know what your<br>time is worth — live</h2>
+          <p class="section-subtitle">
+            Clock Earnings is a real-time earnings tracker that shows you exactly how much you've earned today, this week, and this month — down to the second. Stop guessing, start knowing.
+          </p>
+
+          <div class="product-features">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </div>
+              <div class="feature-text">
+                <h4>Real-Time Counter</h4>
+                <p>Watch your earnings tick up every second based on your hourly rate or annual salary.</p>
+              </div>
             </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+              </div>
+              <div class="feature-text">
+                <h4>Earnings Breakdown</h4>
+                <p>See daily, weekly, and monthly earnings side-by-side with clean visual summaries.</p>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                </svg>
+              </div>
+              <div class="feature-text">
+                <h4>Goal Tracking</h4>
+                <p>Set income goals and see your progress toward them update in real time, every day.</p>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                  <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+                </svg>
+              </div>
+              <div class="feature-text">
+                <h4>Works Everywhere</h4>
+                <p>Use Clock Earnings in your browser, on your phone, or as a desktop widget — always in sync.</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:36px;">
+            <a href="#newsletter" class="btn btn-primary">Join the Waitlist</a>
+            <a href="#newsletter" class="btn btn-ghost">Get Notified</a>
+          </div>
         </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="hero-gradient text-white py-20">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h1 class="text-5xl font-bold mb-6 leading-tight">
-                        Stop Talking About AI.<br/>
-                        <span class="text-indigo-200">Start Using It.</span>
-                    </h1>
-                    <p class="text-xl text-indigo-100 mb-8 leading-relaxed">
-                        We help businesses integrate AI into their daily workflows—no technical expertise required. Save 10-15 hours per week while your team focuses on what matters.
-                    </p>
-                    <div class="flex gap-4">
-                        <a href="#contact" class="bg-white text-indigo-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-indigo-50 transition shadow-lg">
-                            Book Free Audit
-                        </a>
-                        <a href="#how-it-works" class="border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-indigo-600 transition">
-                            How It Works
-                        </a>
-                    </div>
-                    <div class="mt-8 flex items-center gap-6 text-sm">
-                        <div class="flex items-center gap-2">
-                            <span class="text-2xl">⚡</span>
-                            <span>Live in 30 days</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-2xl">💰</span>
-                            <span>ROI guaranteed</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-2xl">🎯</span>
-                            <span>No tech needed</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="hidden md:block">
-                    <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-8 animate-float">
-                        <div class="space-y-4">
-                            <div class="bg-white/20 rounded-lg p-4">
-                                <div class="flex items-center gap-3 mb-2">
-                                    <div class="w-10 h-10 bg-green-400 rounded-full flex items-center justify-center">✓</div>
-                                    <div class="text-sm font-semibold">Customer Research</div>
-                                </div>
-                                <div class="text-xs text-indigo-100">Automated • Saves 8hrs/week</div>
-                            </div>
-                            <div class="bg-white/20 rounded-lg p-4">
-                                <div class="flex items-center gap-3 mb-2">
-                                    <div class="w-10 h-10 bg-green-400 rounded-full flex items-center justify-center">✓</div>
-                                    <div class="text-sm font-semibold">Email Responses</div>
-                                </div>
-                                <div class="text-xs text-indigo-100">Automated • Saves 5hrs/week</div>
-                            </div>
-                            <div class="bg-white/20 rounded-lg p-4">
-                                <div class="flex items-center gap-3 mb-2">
-                                    <div class="w-10 h-10 bg-green-400 rounded-full flex items-center justify-center">✓</div>
-                                    <div class="text-sm font-semibold">Report Generation</div>
-                                </div>
-                                <div class="text-xs text-indigo-100">Automated • Saves 4hrs/week</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Visual / mock widget -->
+        <div class="product-visual">
+          <!-- Small decorative snowflake in corner -->
+          <svg style="position:absolute;top:20px;right:20px;width:48px;height:48px;color:#38BDF8;opacity:.18;" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true">
+            <g transform="translate(50,50)">
+              <line x1="0" y1="-43" x2="0" y2="43" stroke-width="6"/>
+              <line x1="0" y1="-43" x2="0" y2="43" stroke-width="6" transform="rotate(60)"/>
+              <line x1="0" y1="-43" x2="0" y2="43" stroke-width="6" transform="rotate(120)"/>
+              <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="5"/>
+              <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="5"/>
+              <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="5" transform="rotate(60)"/>
+              <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="5" transform="rotate(60)"/>
+              <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="5" transform="rotate(120)"/>
+              <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="5" transform="rotate(120)"/>
+            </g>
+          </svg>
+
+          <div class="clock-widget">
+            <p class="clock-label">Today's Earnings</p>
+            <p class="clock-amount" id="earningsDisplay">$0.00</p>
+            <p class="clock-period">as of <span id="currentTime">--:--:-- --</span></p>
+            <div class="clock-stats">
+              <div class="clock-stat">
+                <div class="clock-stat-value" id="weeklyDisplay">$0</div>
+                <div class="clock-stat-label">This Week</div>
+              </div>
+              <div class="clock-stat">
+                <div class="clock-stat-value" id="monthlyDisplay">$0</div>
+                <div class="clock-stat-label">This Month</div>
+              </div>
             </div>
+          </div>
         </div>
-    </section>
 
-    <!-- Problem Section -->
-    <section class="py-16 bg-white">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Your Team Is Drowning in Busywork</h2>
-                <p class="text-xl text-gray-600">Sound familiar?</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-lg">
-                    <div class="text-3xl mb-3">😫</div>
-                    <h3 class="font-bold text-lg mb-2 text-gray-900">Repetitive Tasks</h3>
-                    <p class="text-gray-600">Your team spends hours on data entry, email responses, and report generation instead of strategic work.</p>
-                </div>
-                <div class="bg-orange-50 border-l-4 border-orange-500 p-6 rounded-lg">
-                    <div class="text-3xl mb-3">🤔</div>
-                    <h3 class="font-bold text-lg mb-2 text-gray-900">AI Confusion</h3>
-                    <p class="text-gray-600">You know AI could help, but you don't know where to start or which tools to use.</p>
-                </div>
-                <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6 rounded-lg">
-                    <div class="text-3xl mb-3">💸</div>
-                    <h3 class="font-bold text-lg mb-2 text-gray-900">Wasted Money</h3>
-                    <p class="text-gray-600">You've tried AI tools before, but they sit unused because no one knows how to implement them properly.</p>
-                </div>
-            </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Coming soon strip -->
+  <div style="background:var(--s100);border-top:1px solid var(--s200);border-bottom:1px solid var(--s200);padding:20px 28px;text-align:center;">
+    <p style="font-size:14px;color:var(--s400);font-weight:500;">
+      More products in development &mdash;
+      <a href="#newsletter" style="color:var(--glacier);text-decoration:none;font-weight:600;">subscribe to be the first to know.</a>
+    </p>
+  </div>
+
+  <!-- ── Newsletter ─────────────────────────────── -->
+  <section class="newsletter-section" id="newsletter">
+    <!-- Decorative snowflake -->
+    <svg style="position:absolute;bottom:-40px;left:5%;width:160px;height:160px;color:#38BDF8;opacity:.05;animation:spin 36s linear infinite;" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true">
+      <g transform="translate(50,50)">
+        <line x1="0" y1="-43" x2="0" y2="43" stroke-width="5"/>
+        <line x1="0" y1="-43" x2="0" y2="43" stroke-width="5" transform="rotate(60)"/>
+        <line x1="0" y1="-43" x2="0" y2="43" stroke-width="5" transform="rotate(120)"/>
+        <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="4"/>
+        <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="4"/>
+        <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="4" transform="rotate(60)"/>
+        <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="4" transform="rotate(60)"/>
+        <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="4" transform="rotate(120)"/>
+        <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="4" transform="rotate(120)"/>
+      </g>
+    </svg>
+
+    <div class="newsletter-inner">
+      <p class="section-label" style="color:var(--ice);">Newsletter</p>
+      <h2 class="section-title">Stay in the loop</h2>
+      <p class="section-subtitle">
+        Get updates on new products, features, and insights from Flurry Systems — delivered straight to your inbox.
+      </p>
+
+      <form class="newsletter-form" id="newsletterForm" onsubmit="handleNewsletter(event)" novalidate>
+        <input
+          type="email"
+          class="newsletter-input"
+          placeholder="your@email.com"
+          id="newsletterEmail"
+          required
+          autocomplete="email"
+        >
+        <button type="submit" class="btn btn-primary" id="newsletterBtn">Subscribe</button>
+      </form>
+      <p class="newsletter-note">No spam, ever. Unsubscribe anytime.</p>
+      <p id="newsletterMsg" style="margin-top:12px;font-size:14px;color:var(--ice);display:none;font-weight:500;">You're on the list! We'll be in touch.</p>
+    </div>
+  </section>
+
+  <!-- ── Footer ─────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo">
+            <svg class="footer-logo-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true">
+              <g transform="translate(50,50)">
+                <line x1="0" y1="-43" x2="0" y2="43" stroke-width="6"/>
+                <line x1="0" y1="-43" x2="0" y2="43" stroke-width="6" transform="rotate(60)"/>
+                <line x1="0" y1="-43" x2="0" y2="43" stroke-width="6" transform="rotate(120)"/>
+                <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="4.5"/>
+                <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="4.5"/>
+                <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="4.5" transform="rotate(60)"/>
+                <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="4.5" transform="rotate(60)"/>
+                <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="4.5" transform="rotate(120)"/>
+                <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="4.5" transform="rotate(120)"/>
+                <circle r="6" fill="currentColor" stroke="none"/>
+              </g>
+            </svg>
+            <span class="footer-logo-text">Flurry Systems</span>
+          </a>
+          <p class="footer-tagline">Building focused tools that help you work smarter and grow with clarity.</p>
         </div>
-    </section>
 
-    <!-- Solution Section -->
-    <section id="how-it-works" class="py-16 bg-gray-50">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">We Build It. You Use It. Everyone Wins.</h2>
-                <p class="text-xl text-gray-600">Our proven 5-week implementation process</p>
-            </div>
-            <div class="space-y-6">
-                <div class="bg-white rounded-xl p-6 shadow-sm border-l-4 border-purple-500 flex items-start gap-6">
-                    <div class="bg-purple-100 text-purple-600 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">1</div>
-                    <div>
-                        <h3 class="font-bold text-xl mb-2 text-gray-900">Week 1: Discovery</h3>
-                        <p class="text-gray-600">We interview your team, map workflows, and identify the biggest time-wasters. You get a prioritized list of AI opportunities with ROI projections.</p>
-                    </div>
-                </div>
-                <div class="bg-white rounded-xl p-6 shadow-sm border-l-4 border-blue-500 flex items-start gap-6">
-                    <div class="bg-blue-100 text-blue-600 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">2</div>
-                    <div>
-                        <h3 class="font-bold text-xl mb-2 text-gray-900">Week 2: Design</h3>
-                        <p class="text-gray-600">We select the right AI tools and design custom workflows that integrate seamlessly with your existing systems (Slack, email, CRM, etc.).</p>
-                    </div>
-                </div>
-                <div class="bg-white rounded-xl p-6 shadow-sm border-l-4 border-green-500 flex items-start gap-6">
-                    <div class="bg-green-100 text-green-600 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">3</div>
-                    <div>
-                        <h3 class="font-bold text-xl mb-2 text-gray-900">Weeks 3-4: Build & Test</h3>
-                        <p class="text-gray-600">We build, configure, and rigorously test your AI workflows. No tech knowledge required from you—we handle everything.</p>
-                    </div>
-                </div>
-                <div class="bg-white rounded-xl p-6 shadow-sm border-l-4 border-orange-500 flex items-start gap-6">
-                    <div class="bg-orange-100 text-orange-600 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">4</div>
-                    <div>
-                        <h3 class="font-bold text-xl mb-2 text-gray-900">Week 5: Training</h3>
-                        <p class="text-gray-600">We train your team with hands-on sessions, video tutorials, and step-by-step guides. Everyone knows exactly how to use their new AI tools.</p>
-                    </div>
-                </div>
-                <div class="bg-white rounded-xl p-6 shadow-sm border-l-4 border-indigo-500 flex items-start gap-6">
-                    <div class="bg-indigo-100 text-indigo-600 w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">5</div>
-                    <div>
-                        <h3 class="font-bold text-xl mb-2 text-gray-900">Ongoing: Optimize</h3>
-                        <p class="text-gray-600">Monthly check-ins to optimize performance, add new capabilities, and ensure you're getting maximum value. We're with you for the long haul.</p>
-                    </div>
-                </div>
-            </div>
+        <div class="footer-col">
+          <h5>Products</h5>
+          <ul>
+            <li><a href="#products">Clock Earnings</a></li>
+            <li><a href="#newsletter">Coming Soon</a></li>
+          </ul>
         </div>
-    </section>
 
-    <!-- Use Cases Section -->
-    <section class="py-16 bg-white">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">What We Can Automate For You</h2>
-                <p class="text-xl text-gray-600">Real workflows that save real time</p>
-            </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 hover:border-indigo-300 transition">
-                    <div class="text-3xl mb-3">📧</div>
-                    <h3 class="font-bold text-lg mb-2 text-gray-900">Email Management</h3>
-                    <p class="text-gray-600 text-sm mb-3">AI drafts responses, categorizes messages, and flags urgent items.</p>
-                    <div class="text-indigo-600 font-semibold text-sm">Saves 5-8 hrs/week</div>
-                </div>
-                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 hover:border-indigo-300 transition">
-                    <div class="text-3xl mb-3">🔍</div>
-                    <h3 class="font-bold text-lg mb-2 text-gray-900">Customer Research</h3>
-                    <p class="text-gray-600 text-sm mb-3">Automated prospect research, competitive analysis, and market insights.</p>
-                    <div class="text-indigo-600 font-semibold text-sm">Saves 8-12 hrs/week</div>
-                </div>
-                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 hover:border-indigo-300 transition">
-                    <div class="text-3xl mb-3">📊</div>
-                    <h3 class="font-bold text-lg mb-2 text-gray-900">Report Generation</h3>
-                    <p class="text-gray-600 text-sm mb-3">Auto-generate weekly reports, dashboards, and performance summaries.</p>
-                    <div class="text-indigo-600 font-semibold text-sm">Saves 4-6 hrs/week</div>
-                </div>
-                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 hover:border-indigo-300 transition">
-                    <div class="text-3xl mb-3">💬</div>
-                    <h3 class="font-bold text-lg mb-2 text-gray-900">Customer Support</h3>
-                    <p class="text-gray-600 text-sm mb-3">AI answers common questions, escalates complex issues, tracks tickets.</p>
-                    <div class="text-indigo-600 font-semibold text-sm">Saves 10-15 hrs/week</div>
-                </div>
-                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 hover:border-indigo-300 transition">
-                    <div class="text-3xl mb-3">✍️</div>
-                    <h3 class="font-bold text-lg mb-2 text-gray-900">Content Creation</h3>
-                    <p class="text-gray-600 text-sm mb-3">Generate blog posts, social media content, and marketing copy.</p>
-                    <div class="text-indigo-600 font-semibold text-sm">Saves 6-10 hrs/week</div>
-                </div>
-                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 hover:border-indigo-300 transition">
-                    <div class="text-3xl mb-3">📅</div>
-                    <h3 class="font-bold text-lg mb-2 text-gray-900">Meeting Prep</h3>
-                    <p class="text-gray-600 text-sm mb-3">AI prepares agendas, summaries, action items, and follow-ups.</p>
-                    <div class="text-indigo-600 font-semibold text-sm">Saves 3-5 hrs/week</div>
-                </div>
-            </div>
+        <div class="footer-col">
+          <h5>Company</h5>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="#newsletter">Newsletter</a></li>
+          </ul>
         </div>
-    </section>
 
-    <!-- Pricing Section -->
-    <section class="py-16 bg-gray-50">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Simple, Transparent Pricing</h2>
-                <p class="text-xl text-gray-600">Choose the plan that fits your needs</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white rounded-2xl p-8 shadow-lg border-2 border-gray-200">
-                    <h3 class="font-bold text-2xl mb-2 text-gray-900">Starter</h3>
-                    <div class="text-4xl font-bold text-gray-900 mb-1">$750</div>
-                    <div class="text-gray-500 mb-6">per month</div>
-                    <ul class="space-y-3 mb-8 text-sm">
-                        <li class="flex items-start gap-2">
-                            <span class="text-green-500 text-lg">✓</span>
-                            <span>1-2 AI workflows</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-green-500 text-lg">✓</span>
-                            <span>Setup & training</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-green-500 text-lg">✓</span>
-                            <span>Email support</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-green-500 text-lg">✓</span>
-                            <span>Monthly optimization</span>
-                        </li>
-                    </ul>
-                    <a href="#contact" class="block w-full text-center bg-gray-100 text-gray-900 py-3 rounded-lg font-semibold hover:bg-gray-200 transition">
-                        Get Started
-                    </a>
-                </div>
-
-                <div class="bg-white rounded-2xl p-8 shadow-2xl border-2 border-indigo-500 relative transform scale-105">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-indigo-500 text-white px-4 py-1 rounded-full text-sm font-bold">
-                        MOST POPULAR
-                    </div>
-                    <h3 class="font-bold text-2xl mb-2 text-gray-900">Professional</h3>
-                    <div class="text-4xl font-bold text-gray-900 mb-1">$2,500</div>
-                    <div class="text-gray-500 mb-6">per month</div>
-                    <ul class="space-y-3 mb-8 text-sm">
-                        <li class="flex items-start gap-2">
-                            <span class="text-green-500 text-lg">✓</span>
-                            <span>3-5 AI workflows</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-green-500 text-lg">✓</span>
-                            <span>Custom AI agents</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-green-500 text-lg">✓</span>
-                            <span>Priority support</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-green-500 text-lg">✓</span>
-                            <span>Bi-weekly check-ins</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-green-500 text-lg">✓</span>
-                            <span>Performance dashboards</span>
-                        </li>
-                    </ul>
-                    <a href="#contact" class="block w-full text-center bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition">
-                        Get Started
-                    </a>
-                </div>
-
-                <div class="bg-white rounded-2xl p-8 shadow-lg border-2 border-gray-200">
-                    <h3 class="font-bold text-2xl mb-2 text-gray-900">Enterprise</h3>
-                    <div class="text-4xl font-bold text-gray-900 mb-1">Custom</div>
-                    <div class="text-gray-500 mb-6">let's talk</div>
-                    <ul class="space-y-3 mb-8 text-sm">
-                        <li class="flex items-start gap-2">
-                            <span class="text-green-500 text-lg">✓</span>
-                            <span>Unlimited workflows</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-green-500 text-lg">✓</span>
-                            <span>Dedicated manager</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-green-500 text-lg">✓</span>
-                            <span>24/7 support</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-green-500 text-lg">✓</span>
-                            <span>Weekly optimization</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-green-500 text-lg">✓</span>
-                            <span>Custom development</span>
-                        </li>
-                    </ul>
-                    <a href="#contact" class="block w-full text-center bg-gray-100 text-gray-900 py-3 rounded-lg font-semibold hover:bg-gray-200 transition">
-                        Contact Us
-                    </a>
-                </div>
-            </div>
+        <div class="footer-col">
+          <h5>Connect</h5>
+          <ul>
+            <li><a href="mailto:hello@flurrysystems.com">Email Us</a></li>
+          </ul>
         </div>
-    </section>
+      </div>
 
-    <!-- CTA Section -->
-    <section id="contact" class="py-20 hero-gradient text-white">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <h2 class="text-4xl font-bold mb-6">Ready to Stop Wasting Time?</h2>
-            <p class="text-xl text-indigo-100 mb-8">Book a free 30-minute workflow audit. We'll identify exactly where AI can save your team the most time.</p>
-            <div class="bg-white rounded-xl p-8 max-w-md mx-auto">
-                <form class="space-y-4" onsubmit="handleSubmit(event)">
-                    <input type="text" placeholder="Your Name" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none text-gray-900">
-                    <input type="email" placeholder="Work Email" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none text-gray-900">
-                    <input type="text" placeholder="Company Name" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none text-gray-900">
-                    <select required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none text-gray-900">
-                        <option value="">Company Size</option>
-                        <option>1-10 employees</option>
-                        <option>11-50 employees</option>
-                        <option>51-200 employees</option>
-                        <option>200+ employees</option>
-                    </select>
-                    <button type="submit" class="w-full bg-indigo-600 text-white py-4 rounded-lg font-bold text-lg hover:bg-indigo-700 transition">
-                        Book Free Audit
-                    </button>
-                </form>
-                <p class="text-xs text-gray-500 mt-4">No credit card required • 30-minute call • Get actionable insights</p>
-            </div>
-        </div>
-    </section>
+      <hr class="footer-divider">
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 py-8">
-        <div class="max-w-6xl mx-auto px-4 text-center">
-            <div class="text-xl font-bold text-white mb-2">Flurry Systems</div>
-            <p class="text-sm">Helping businesses integrate AI into daily workflows</p>
-            <p class="text-xs mt-4">© 2025 Flurry Systems. All rights reserved.</p>
-        </div>
-    </footer>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Flurry Systems. All rights reserved.</span>
+        <span>Crafted with care in every detail.</span>
+      </div>
+    </div>
+  </footer>
 
-    <script>
-        function handleSubmit(e) {
-            e.preventDefault();
-            alert('Thanks! This is a demo. In production, this would connect to your email or CRM.');
-            // In production, integrate with: Calendly, Google Forms, Typeform, or your CRM
-        }
-    </script>
+  <script>
+    // ── Mobile nav ──────────────────────────────
+    const toggle = document.getElementById('navToggle');
+    const links  = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => links.classList.toggle('open'));
+    // Close on link click
+    links.querySelectorAll('a').forEach(a =>
+      a.addEventListener('click', () => links.classList.remove('open'))
+    );
+
+    // ── Clock Earnings live demo ────────────────
+    const HOURLY = 35; // demo rate — $35/hr
+
+    function updateClock() {
+      const now = new Date();
+
+      // Time string
+      document.getElementById('currentTime').textContent =
+        now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+      // Today — 8-hour work day starting 9am
+      const workStart = new Date(now);
+      workStart.setHours(9, 0, 0, 0);
+      const secsWorked = Math.min(Math.max((now - workStart) / 1000, 0), 8 * 3600);
+      const todayEarned = (secsWorked / 3600) * HOURLY;
+      document.getElementById('earningsDisplay').textContent = '$' + todayEarned.toFixed(2);
+
+      // This week — Mon starts
+      const dow = now.getDay();
+      const daysThisWeek = dow === 0 ? 0 : dow - 1; // days before today (Mon=0)
+      const weeklyEarned = daysThisWeek * 8 * HOURLY + todayEarned;
+      document.getElementById('weeklyDisplay').textContent =
+        '$' + Math.round(weeklyEarned).toLocaleString();
+
+      // This month — rough weekday count
+      const d = now.getDate();
+      const weekdaysSoFar = Math.round((d - 1) * 5 / 7);
+      const monthlyEarned = weekdaysSoFar * 8 * HOURLY + todayEarned;
+      document.getElementById('monthlyDisplay').textContent =
+        '$' + Math.round(monthlyEarned).toLocaleString();
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // ── Newsletter ──────────────────────────────
+    function handleNewsletter(e) {
+      e.preventDefault();
+      const btn = document.getElementById('newsletterBtn');
+      const msg = document.getElementById('newsletterMsg');
+      const input = document.getElementById('newsletterEmail');
+
+      btn.textContent = 'Subscribed!';
+      btn.style.background = 'var(--green)';
+      btn.disabled = true;
+      input.value = '';
+      msg.style.display = 'block';
+
+      setTimeout(() => {
+        btn.textContent = 'Subscribe';
+        btn.style.background = '';
+        btn.disabled = false;
+        msg.style.display = 'none';
+      }, 4000);
+    }
+  </script>
 </body>
 </html>
