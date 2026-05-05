@@ -155,6 +155,41 @@ app.delete('/api/posts/:id', requireAuth, (req, res) => {
   res.json({ success: true });
 });
 
+// ── API: Newsletter signup → Mailchimp ───────────────────────────────────────
+app.post('/api/subscribe', async (req, res) => {
+  const { email } = req.body;
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+    return res.status(400).json({ error: 'Valid email required' });
+
+  const { MAILCHIMP_API_KEY, MAILCHIMP_DC, MAILCHIMP_AUDIENCE_ID } = process.env;
+  if (!MAILCHIMP_API_KEY || !MAILCHIMP_DC || !MAILCHIMP_AUDIENCE_ID)
+    return res.status(500).json({ error: 'Mailchimp not configured' });
+
+  try {
+    const response = await fetch(
+      `https://${MAILCHIMP_DC}.api.mailchimp.com/3.0/lists/${MAILCHIMP_AUDIENCE_ID}/members`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Basic ' + Buffer.from(`anystring:${MAILCHIMP_API_KEY}`).toString('base64')
+        },
+        body: JSON.stringify({ email_address: email, status: 'subscribed' })
+      }
+    );
+
+    const data = await response.json();
+
+    // 400 with title "Member Exists" means already subscribed — treat as success
+    if (response.ok || data.title === 'Member Exists')
+      return res.json({ success: true });
+
+    return res.status(400).json({ error: data.detail || 'Could not subscribe' });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error: ' + err.message });
+  }
+});
+
 // ── API: Import from URL (Substack → Blog) ────────────────────────────────────
 app.post('/api/import', requireAuth, async (req, res) => {
   const { url } = req.body;
