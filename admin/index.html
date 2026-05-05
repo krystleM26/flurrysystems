@@ -432,6 +432,57 @@
       gap: 10px;
     }
     .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── Import view ──────────────────────────── */
+    .import-card {
+      background: var(--white);
+      border: 1px solid var(--s200);
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 620px;
+    }
+    .import-url-row { display: flex; gap: 10px; }
+    .import-url-row input {
+      flex: 1;
+      padding: 11px 14px;
+      border: 1.5px solid var(--s200);
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: var(--font);
+      color: var(--s800);
+      outline: none;
+      transition: border-color .18s;
+    }
+    .import-url-row input:focus { border-color: var(--glacier); }
+    .import-preview {
+      margin-top: 24px;
+      border: 1px solid var(--s200);
+      border-radius: 10px;
+      overflow: hidden;
+      display: none;
+    }
+    .import-preview-header {
+      background: var(--s100);
+      border-bottom: 1px solid var(--s200);
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--s600);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .import-preview-body { padding: 20px; }
+    .import-preview-title { font-size: 18px; font-weight: 700; color: var(--s800); margin-bottom: 8px; }
+    .import-preview-excerpt { font-size: 14px; color: var(--s500); line-height: 1.6; }
+    .import-divider { margin: 20px 0; border: none; border-top: 1px solid var(--s200); }
+    .import-note {
+      font-size: 13px;
+      color: var(--s400);
+      line-height: 1.6;
+      margin-top: 16px;
+    }
+    .import-note a { color: var(--glacier); }
     .toast.success { background: #064E3B; }
     .toast.error   { background: #7F1D1D; }
   </style>
@@ -514,6 +565,10 @@
         <button class="sidebar-link" id="navNew" onclick="showView('editor'); resetEditor()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           New Post
+        </button>
+        <button class="sidebar-link" id="navImport" onclick="showView('import')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Import from Substack
         </button>
       </nav>
 
@@ -634,6 +689,54 @@
               </div>
             </div>
           </div>
+        <!-- Import view -->
+        <div class="view" id="viewImport">
+          <div class="panel-header">
+            <div>
+              <h1 class="panel-title">Import from Substack</h1>
+              <p class="panel-subtitle">Paste a Substack post URL to pull it into the editor</p>
+            </div>
+            <button class="btn-sm btn-ghost" onclick="showView('posts')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              Back
+            </button>
+          </div>
+
+          <div class="import-card">
+            <p style="font-size:14px;color:var(--s600);margin-bottom:16px;line-height:1.6;">
+              Paste any public Substack post URL below. We'll fetch the title and content and load it into the editor so you can publish it here.
+            </p>
+            <div class="import-url-row">
+              <input type="url" id="importUrl" placeholder="https://flurryfieldnotes.substack.com/p/your-post" autocomplete="off">
+              <button class="btn-sm btn-primary" id="importBtn" onclick="handleImport()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Fetch Post
+              </button>
+            </div>
+
+            <div class="import-preview" id="importPreview">
+              <div class="import-preview-header">
+                <span>Preview</span>
+                <button class="btn-sm btn-primary" onclick="openImportInEditor()" style="padding:6px 14px;font-size:13px;">
+                  Open in Editor →
+                </button>
+              </div>
+              <div class="import-preview-body">
+                <p class="import-preview-title" id="importPreviewTitle"></p>
+                <p class="import-preview-excerpt" id="importPreviewExcerpt"></p>
+              </div>
+            </div>
+
+            <hr class="import-divider">
+
+            <p style="font-size:13px;font-weight:700;color:var(--s700);margin-bottom:8px;">Blog → Substack</p>
+            <p class="import-note">
+              To post from your blog to Substack, go to your post's page, click <strong>Copy for Substack</strong>, then paste into
+              <a href="https://flurryfieldnotes.substack.com/publish/post" target="_blank">Substack's editor</a>.
+            </p>
+          </div>
+        </div>
+
         </div>
 
       </main>
@@ -717,11 +820,14 @@
     }
 
     // ── Navigation ────────────────────────────────────────────────────────────
+    const NAV_MAP = { editor: 'New', posts: 'Posts', import: 'Import' };
     function showView(name) {
       document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
       document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
       document.getElementById('view' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
-      document.getElementById('nav' + (name === 'editor' ? 'New' : 'Posts')).classList.add('active');
+      const navId = 'nav' + (NAV_MAP[name] || 'Posts');
+      const navEl = document.getElementById(navId);
+      if (navEl) navEl.classList.add('active');
     }
 
     // ── Posts list ────────────────────────────────────────────────────────────
@@ -756,11 +862,76 @@
             <div class="post-actions">
               <button class="btn-sm btn-ghost" onclick="editPost(${p.id})">Edit</button>
               <button class="btn-sm btn-ghost" onclick="window.open('/posts/${esc(p.filename)}','_blank')">View</button>
+              <button class="btn-sm btn-ghost" onclick="copyForSubstack('${esc(p.filename)}')" title="Copy HTML to paste into Substack">
+                Copy for Substack
+              </button>
               <button class="btn-sm btn-danger" onclick="deletePost(${p.id}, '${esc(p.title)}')">Delete</button>
             </div>
           </td>
         </tr>
       `).join('');
+    }
+
+    // ── Copy for Substack ─────────────────────────────────────────────────────
+    async function copyForSubstack(filename) {
+      try {
+        const r    = await fetch('/posts/' + filename);
+        const html = await r.text();
+        const match = html.match(/<div class="post-body">([\s\S]*?)<\/div>\s*<div style="margin-top/);
+        const content = match ? match[1].trim() : '';
+        if (!content) { showToast('Could not extract content', 'error'); return; }
+        await navigator.clipboard.writeText(content);
+        showToast('Copied! Paste it into Substack\'s editor.', 'success');
+      } catch {
+        showToast('Copy failed — try opening the post and copying manually', 'error');
+      }
+    }
+
+    // ── Import from Substack ──────────────────────────────────────────────────
+    let importedData = null;
+
+    async function handleImport() {
+      const url = document.getElementById('importUrl').value.trim();
+      if (!url) return;
+      const btn     = document.getElementById('importBtn');
+      const preview = document.getElementById('importPreview');
+
+      btn.disabled = true;
+      btn.innerHTML = '<span style="opacity:.7">Fetching…</span>';
+
+      try {
+        const r = await fetch('/api/import', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url })
+        });
+        const d = await r.json();
+        if (!r.ok) { showToast(d.error || 'Failed to fetch', 'error'); return; }
+
+        importedData = d;
+        document.getElementById('importPreviewTitle').textContent  = d.title;
+        document.getElementById('importPreviewExcerpt').textContent = d.excerpt || '(no excerpt)';
+        preview.style.display = 'block';
+        showToast('Post fetched! Review below then open in editor.', 'success');
+      } catch {
+        showToast('Connection error', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Fetch Post`;
+      }
+    }
+
+    function openImportInEditor() {
+      if (!importedData) return;
+      showView('editor');
+      resetEditor();
+      document.getElementById('postTitle').value   = importedData.title || '';
+      document.getElementById('postExcerpt').value = importedData.excerpt || '';
+      quill.clipboard.dangerouslyPasteHTML(importedData.content || '');
+      updateEditorStatus();
+      importedData = null;
+      document.getElementById('importPreview').style.display = 'none';
+      document.getElementById('importUrl').value = '';
     }
 
     // ── Editor ────────────────────────────────────────────────────────────────

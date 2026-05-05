@@ -2,11 +2,12 @@
 
 require('dotenv').config();
 
-const express = require('express');
-const session = require('express-session');
+const express  = require('express');
+const session  = require('express-session');
 const bcrypt   = require('bcryptjs');
 const fs       = require('fs');
 const path     = require('path');
+const cheerio  = require('cheerio');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -152,6 +153,64 @@ app.delete('/api/posts/:id', requireAuth, (req, res) => {
   writeManifest(manifest);
 
   res.json({ success: true });
+});
+
+// ── API: Import from URL (Substack → Blog) ────────────────────────────────────
+app.post('/api/import', requireAuth, async (req, res) => {
+  const { url } = req.body;
+  if (!url) return res.status(400).json({ error: 'URL required' });
+
+  // Only allow http/https
+  let parsed;
+  try {
+    parsed = new URL(url);
+    if (!['http:', 'https:'].includes(parsed.protocol))
+      return res.status(400).json({ error: 'Invalid URL' });
+  } catch {
+    return res.status(400).json({ error: 'Invalid URL' });
+  }
+
+  try {
+    const response = await fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; FlurrySystems/1.0; +https://flurrysystems.com)' }
+    });
+    if (!response.ok) return res.status(400).json({ error: `Could not fetch page (${response.status})` });
+
+    const html = await response.text();
+    const $    = cheerio.load(html);
+
+    // Title — try Substack selectors then fall back
+    const title =
+      $('h1.post-title').first().text().trim() ||
+      $('h1[data-testid="post-title"]').first().text().trim() ||
+      $('article h1').first().text().trim() ||
+      $('h1').first().text().trim() ||
+      $('title').text().replace(/\s*[|\-–]\s*(Substack|by .+)$/i, '').trim();
+
+    // Content — Substack body lives in .body.markup or .available-content
+    let $content =
+      $('.body.markup').length         ? $('.body.markup') :
+      $('.available-content').length   ? $('.available-content') :
+      $('article .post-content').length ? $('article .post-content') :
+      $('article');
+
+    // Strip paywalls, scripts, subscription widgets
+    $content.find('script, style, .paywall, .subscription-widget-wrap, .subscribe-widget, [class*="paywall"]').remove();
+
+    const content = $content.html() || '';
+
+    // Excerpt from meta tags or first paragraph
+    const excerpt =
+      $('meta[property="og:description"]').attr('content') ||
+      $('meta[name="description"]').attr('content') ||
+      $content.find('p').first().text().slice(0, 180).trim();
+
+    if (!title && !content) return res.status(422).json({ error: 'Could not extract content from this URL. Try copying and pasting manually.' });
+
+    res.json({ title, content, excerpt });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch post: ' + err.message });
+  }
 });
 
 // ── Post page HTML template ───────────────────────────────────────────────────
