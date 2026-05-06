@@ -196,35 +196,156 @@
         </div>
 
         <!-- Visual / mock widget -->
-        <div class="product-visual">
-          <!-- Small decorative snowflake in corner -->
-          <svg style="position:absolute;top:20px;right:20px;width:48px;height:48px;color:#38BDF8;opacity:.18;" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true">
-            <g transform="translate(50,50)">
-              <line x1="0" y1="-43" x2="0" y2="43" stroke-width="6"/>
-              <line x1="0" y1="-43" x2="0" y2="43" stroke-width="6" transform="rotate(60)"/>
-              <line x1="0" y1="-43" x2="0" y2="43" stroke-width="6" transform="rotate(120)"/>
-              <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="5"/>
-              <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="5"/>
-              <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="5" transform="rotate(60)"/>
-              <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="5" transform="rotate(60)"/>
-              <line x1="-13" y1="-26" x2="13" y2="-26" stroke-width="5" transform="rotate(120)"/>
-              <line x1="-13" y1="26"  x2="13" y2="26"  stroke-width="5" transform="rotate(120)"/>
-            </g>
-          </svg>
+        <div class="product-visual" style="padding:0;overflow:hidden;background:#fff;border-radius:16px;">
+          <!-- Schedule mockup -->
+          <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;color:#1a1a2e;">
 
-          <div class="clock-widget">
-            <p class="clock-label">Today's Earnings</p>
-            <p class="clock-amount" id="earningsDisplay">$0.00</p>
-            <p class="clock-period">as of <span id="currentTime">--:--:-- --</span></p>
-            <div class="clock-stats">
-              <div class="clock-stat">
-                <div class="clock-stat-value" id="weeklyDisplay">$0</div>
-                <div class="clock-stat-label">This Week</div>
+            <!-- Toolbar -->
+            <div style="padding:16px 16px 12px;border-bottom:1px solid #e5e7eb;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+              <button style="background:#111;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:default;">prev</button>
+              <span style="font-weight:700;font-size:13px;">May 5 – May 11, 2026</span>
+              <button style="background:#111;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:default;">next</button>
+              <span style="color:#6366f1;font-weight:600;font-size:13px;">Today</span>
+              <div style="width:100%;display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+                <button style="background:#111;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:11px;font-weight:600;cursor:default;">Save as Template</button>
+                <button style="background:#111;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:11px;font-weight:600;cursor:default;">My Templates</button>
+                <button style="background:#111;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:11px;font-weight:600;cursor:default;">Set as Default</button>
               </div>
-              <div class="clock-stat">
-                <div class="clock-stat-value" id="monthlyDisplay">$0</div>
-                <div class="clock-stat-label">This Month</div>
+              <div style="display:flex;gap:8px;margin-top:4px;">
+                <button style="background:#f59e0b;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:11px;font-weight:700;cursor:default;">💰 Submit to Payroll</button>
+                <button style="background:#fef3c7;color:#92400e;border:none;border-radius:8px;padding:6px 14px;font-size:11px;font-weight:700;cursor:default;position:relative;">Review Submissions <span style="position:absolute;top:-6px;right:-6px;background:#ef4444;color:#fff;border-radius:50%;width:16px;height:16px;font-size:10px;display:flex;align-items:center;justify-content:center;">1</span></button>
               </div>
+            </div>
+
+            <!-- Schedule header -->
+            <div style="padding:12px 16px 8px;display:flex;justify-content:space-between;align-items:flex-start;">
+              <div>
+                <div style="font-weight:700;font-size:14px;">Team Schedule — May 5 – May 11, 2026</div>
+                <div style="font-size:11px;color:#6b7280;margin-top:2px;">4 scheduled · Click an employee to edit their shifts</div>
+              </div>
+              <button style="background:#22c55e;color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;cursor:default;">+ Add Employee</button>
+            </div>
+
+            <!-- Schedule grid -->
+            <div style="overflow-x:auto;">
+              <table style="width:100%;border-collapse:collapse;font-size:11px;">
+                <thead>
+                  <tr style="background:#f9fafb;">
+                    <th style="padding:8px 12px;text-align:left;font-weight:600;color:#6b7280;border-bottom:1px solid #e5e7eb;width:120px;">EMPLOYEE</th>
+                    <th style="padding:8px 6px;text-align:center;font-weight:700;color:#6366f1;border-bottom:1px solid #e5e7eb;border-left:2px solid #6366f1;background:#eef2ff;">MON<br><span style="font-weight:500;color:#6366f1;font-size:10px;">May 5</span></th>
+                    <th style="padding:8px 6px;text-align:center;font-weight:600;color:#6b7280;border-bottom:1px solid #e5e7eb;">TUE<br><span style="font-size:10px;">May 6</span></th>
+                    <th style="padding:8px 6px;text-align:center;font-weight:600;color:#6b7280;border-bottom:1px solid #e5e7eb;">WED<br><span style="font-size:10px;">May 7</span></th>
+                    <th style="padding:8px 6px;text-align:center;font-weight:600;color:#6b7280;border-bottom:1px solid #e5e7eb;">THU<br><span style="font-size:10px;">May 8</span></th>
+                    <th style="padding:8px 6px;text-align:center;font-weight:600;color:#6b7280;border-bottom:1px solid #e5e7eb;">FRI<br><span style="font-size:10px;">May 9</span></th>
+                    <th style="padding:8px 6px;text-align:center;font-weight:700;color:#6366f1;border-bottom:1px solid #e5e7eb;">TOTAL</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Jordan M. -->
+                  <tr style="border-bottom:1px solid #f3f4f6;">
+                    <td style="padding:10px 12px;">
+                      <div style="display:flex;align-items:center;gap:8px;">
+                        <div style="width:30px;height:30px;border-radius:50%;background:#6366f1;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0;">JM</div>
+                        <div><div style="font-weight:600;">Jordan M.</div><div style="color:#9ca3af;font-size:10px;">Manager</div></div>
+                      </div>
+                    </td>
+                    <td style="padding:8px 6px;text-align:center;background:#eef2ff;border-left:2px solid #6366f1;">
+                      <div style="font-size:10px;font-weight:600;">8:00AM–4:00PM</div>
+                      <div style="color:#6366f1;font-weight:700;">8.0h</div>
+                      <div style="color:#9ca3af;font-size:9px;">Lunch 30m</div>
+                    </td>
+                    <td style="padding:8px 6px;text-align:center;">
+                      <div style="font-size:10px;font-weight:600;">8:00AM–4:00PM</div>
+                      <div style="color:#6366f1;font-weight:700;">8.0h</div>
+                      <div style="color:#9ca3af;font-size:9px;">Lunch 30m</div>
+                    </td>
+                    <td style="padding:8px 6px;text-align:center;color:#d1d5db;">Off</td>
+                    <td style="padding:8px 6px;text-align:center;">
+                      <div style="font-size:10px;font-weight:600;">8:00AM–4:00PM</div>
+                      <div style="color:#6366f1;font-weight:700;">8.0h</div>
+                    </td>
+                    <td style="padding:8px 6px;text-align:center;">
+                      <div style="font-size:10px;font-weight:600;">8:00AM–4:00PM</div>
+                      <div style="color:#6366f1;font-weight:700;">8.0h</div>
+                    </td>
+                    <td style="padding:8px 6px;text-align:center;font-weight:700;color:#6366f1;">32.0h</td>
+                  </tr>
+                  <!-- Sofia R. -->
+                  <tr style="border-bottom:1px solid #f3f4f6;">
+                    <td style="padding:10px 12px;">
+                      <div style="display:flex;align-items:center;gap:8px;">
+                        <div style="width:30px;height:30px;border-radius:50%;background:#6366f1;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0;">SR</div>
+                        <div><div style="font-weight:600;">Sofia R.</div><div style="color:#9ca3af;font-size:10px;">Staff</div></div>
+                      </div>
+                    </td>
+                    <td style="padding:8px 6px;text-align:center;background:#eef2ff;border-left:2px solid #6366f1;color:#d1d5db;">Off</td>
+                    <td style="padding:8px 6px;text-align:center;">
+                      <div style="font-size:10px;font-weight:600;">12:00PM–8:00PM</div>
+                      <div style="color:#6366f1;font-weight:700;">8.0h</div>
+                      <div style="color:#9ca3af;font-size:9px;">Lunch 30m</div>
+                    </td>
+                    <td style="padding:8px 6px;text-align:center;">
+                      <div style="font-size:10px;font-weight:600;">12:00PM–8:00PM</div>
+                      <div style="color:#6366f1;font-weight:700;">8.0h</div>
+                    </td>
+                    <td style="padding:8px 6px;text-align:center;">
+                      <div style="font-size:10px;font-weight:600;">12:00PM–8:00PM</div>
+                      <div style="color:#6366f1;font-weight:700;">8.0h</div>
+                    </td>
+                    <td style="padding:8px 6px;text-align:center;color:#d1d5db;">Off</td>
+                    <td style="padding:8px 6px;text-align:center;font-weight:700;color:#6366f1;">40.0h</td>
+                  </tr>
+                  <!-- Devon K. -->
+                  <tr style="border-bottom:1px solid #f3f4f6;">
+                    <td style="padding:10px 12px;">
+                      <div style="display:flex;align-items:center;gap:8px;">
+                        <div style="width:30px;height:30px;border-radius:50%;background:#6366f1;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0;">DK</div>
+                        <div><div style="font-weight:600;">Devon K.</div><div style="color:#9ca3af;font-size:10px;">Staff</div></div>
+                      </div>
+                    </td>
+                    <td style="padding:8px 6px;text-align:center;background:#eef2ff;border-left:2px solid #6366f1;">
+                      <div style="font-size:10px;font-weight:600;">4:00PM–12:00AM</div>
+                      <div style="color:#6366f1;font-weight:700;">8.0h</div>
+                    </td>
+                    <td style="padding:8px 6px;text-align:center;color:#d1d5db;">Off</td>
+                    <td style="padding:8px 6px;text-align:center;">
+                      <div style="font-size:10px;font-weight:600;">4:00PM–12:00AM</div>
+                      <div style="color:#6366f1;font-weight:700;">8.0h</div>
+                    </td>
+                    <td style="padding:8px 6px;text-align:center;">
+                      <div style="font-size:10px;font-weight:600;">4:00PM–12:00AM</div>
+                      <div style="color:#6366f1;font-weight:700;">8.0h</div>
+                    </td>
+                    <td style="padding:8px 6px;text-align:center;">
+                      <div style="font-size:10px;font-weight:600;">4:00PM–12:00AM</div>
+                      <div style="color:#6366f1;font-weight:700;">8.0h</div>
+                    </td>
+                    <td style="padding:8px 6px;text-align:center;font-weight:700;color:#6366f1;">32.0h</td>
+                  </tr>
+                  <!-- Alex L. -->
+                  <tr>
+                    <td style="padding:10px 12px;">
+                      <div style="display:flex;align-items:center;gap:8px;">
+                        <div style="width:30px;height:30px;border-radius:50%;background:#6366f1;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0;">AL</div>
+                        <div><div style="font-weight:600;">Alex L.</div><div style="color:#9ca3af;font-size:10px;">Staff</div></div>
+                      </div>
+                    </td>
+                    <td style="padding:8px 6px;text-align:center;background:#eef2ff;border-left:2px solid #6366f1;color:#d1d5db;">Off</td>
+                    <td style="padding:8px 6px;text-align:center;color:#d1d5db;">Off</td>
+                    <td style="padding:8px 6px;text-align:center;">
+                      <div style="font-size:10px;font-weight:600;">8:00AM–4:00PM</div>
+                      <div style="color:#6366f1;font-weight:700;">8.0h</div>
+                      <div style="color:#9ca3af;font-size:9px;">Lunch 30m</div>
+                    </td>
+                    <td style="padding:8px 6px;text-align:center;color:#d1d5db;">Off</td>
+                    <td style="padding:8px 6px;text-align:center;">
+                      <div style="font-size:10px;font-weight:600;">8:00AM–4:00PM</div>
+                      <div style="color:#6366f1;font-weight:700;">8.0h</div>
+                    </td>
+                    <td style="padding:8px 6px;text-align:center;font-weight:700;color:#6366f1;">32.0h</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
