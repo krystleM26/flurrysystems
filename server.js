@@ -232,6 +232,23 @@ app.post('/api/import', requireAuth, async (req, res) => {
     // Strip paywalls, scripts, subscription widgets
     $content.find('script, style, .paywall, .subscription-widget-wrap, .subscribe-widget, [class*="paywall"]').remove();
 
+    // Substack ships a tiny blurred placeholder in src and the real sizes in
+    // srcset/data-srcset — swap in the highest-resolution variant so images
+    // aren't stretched-and-blurry when pasted into the editor.
+    $content.find('img').each((_, el) => {
+      const $img = $(el);
+      const srcset = $img.attr('srcset') || $img.attr('data-srcset');
+      if (srcset) {
+        const candidates = srcset.split(',').map(s => s.trim().split(/\s+/));
+        const best = candidates.reduce((a, b) => {
+          const aw = parseInt(a[1]) || 0, bw = parseInt(b[1]) || 0;
+          return bw > aw ? b : a;
+        });
+        if (best && best[0]) $img.attr('src', best[0]);
+      }
+      $img.removeAttr('srcset').removeAttr('data-srcset').removeAttr('loading');
+    });
+
     const content = $content.html() || '';
 
     // Excerpt from meta tags or first paragraph
@@ -261,6 +278,7 @@ function buildPostPage({ title, excerpt, tag, content, date }) {
   <link rel="stylesheet" href="../src/css/style.css">
   <style>
     .post-body { font-size: 17px; line-height: 1.85; color: var(--s700); }
+    .post-body img { max-width: 100%; height: auto; display: block; border-radius: 8px; margin: 1.4em 0; }
     .post-body h2 { font-size: 26px; font-weight: 700; color: var(--s800); margin: 2em 0 .6em; letter-spacing: -.5px; }
     .post-body h3 { font-size: 20px; font-weight: 700; color: var(--s800); margin: 1.6em 0 .5em; }
     .post-body p  { margin-bottom: 1.4em; }
