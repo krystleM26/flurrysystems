@@ -10,19 +10,19 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
     :root {
-      --snow: #F4F6F8;
-      --glacier: #82303C;
-      --deep-glacier: #68212C;
-      --ocean: #4F1822;
-      --s100: #EDEFF3;
-      --s200: #DCE0E8;
-      --s300: #C2C9D3;
-      --s400: #8EA1AE;
-      --s500: #76838D;
-      --s600: #685652;
-      --s700: #4F4441;
-      --s800: #32404A;
-      --s900: #27363F;
+      --snow: #F8FAFC;
+      --glacier: #38BDF8;
+      --deep-glacier: #0EA5E9;
+      --ocean: #0284C7;
+      --s100: #F1F5F9;
+      --s200: #E2E8F0;
+      --s300: #CBD5E1;
+      --s400: #94A3B8;
+      --s500: #64748B;
+      --s600: #475569;
+      --s700: #334155;
+      --s800: #1E293B;
+      --s900: #0F172A;
       --white: #FFFFFF;
       --green: #10B981;
       --red: #EF4444;
@@ -46,7 +46,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(140deg, var(--s900), var(--s800), #3A1620);
+      background: linear-gradient(140deg, var(--s900), var(--s800), #1b3a5c);
     }
 
     .login-card {
@@ -140,7 +140,7 @@
     .topbar-logo svg { width: 26px; height: 26px; color: var(--glacier); }
     .topbar-logo span { font-size: 15px; font-weight: 700; }
     .topbar-badge {
-      background: rgba(130,48,60,.15);
+      background: rgba(56,189,248,.15);
       color: var(--glacier);
       font-size: 11px;
       font-weight: 700;
@@ -148,7 +148,7 @@
       text-transform: uppercase;
       padding: 3px 10px;
       border-radius: 100px;
-      border: 1px solid rgba(130,48,60,.25);
+      border: 1px solid rgba(56,189,248,.25);
       margin-left: 10px;
     }
     .topbar-right { display: flex; align-items: center; gap: 16px; }
@@ -212,7 +212,7 @@
       font-family: var(--font);
     }
     .sidebar-link:hover { background: var(--s100); color: var(--s800); }
-    .sidebar-link.active { background: #F7ECEE; color: var(--ocean); font-weight: 600; }
+    .sidebar-link.active { background: #F0F9FF; color: var(--ocean); font-weight: 600; }
     .sidebar-link svg { opacity: .7; }
 
     /* Main panel */
@@ -284,9 +284,9 @@
     .post-title-cell { font-weight: 600; color: var(--s800); }
     .post-tag-pill {
       display: inline-block;
-      background: #F7ECEE;
+      background: #F0F9FF;
       color: var(--ocean);
-      border: 1px solid #E8C9CE;
+      border: 1px solid #BAE6FD;
       border-radius: 100px;
       padding: 2px 10px;
       font-size: 11.5px;
@@ -599,7 +599,7 @@
             </thead>
             <tbody id="postsTableBody">
               <tr><td colspan="4" class="empty-table">
-                <svg width="32" height="32" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round" style="opacity:.3;color:#8EA1AE;">
+                <svg width="32" height="32" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round" style="opacity:.3;color:#94A3B8;">
                   <g transform="translate(50,50)">
                     <line x1="0" y1="-40" x2="0" y2="40" stroke-width="5"/>
                     <line x1="0" y1="-40" x2="0" y2="40" stroke-width="5" transform="rotate(60)"/>
@@ -689,7 +689,6 @@
               </div>
             </div>
           </div>
-        </div>
         
         <!-- Import view -->
         <div class="view" id="viewImport">
@@ -840,7 +839,7 @@
       const tbody = document.getElementById('postsTableBody');
       if (!posts.length) {
         tbody.innerHTML = `<tr><td colspan="4" class="empty-table">
-          <svg width="32" height="32" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round" style="opacity:.3;color:#8EA1AE;">
+          <svg width="32" height="32" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round" style="opacity:.3;color:#94A3B8;">
             <g transform="translate(50,50)">
               <line x1="0" y1="-40" x2="0" y2="40" stroke-width="5"/>
               <line x1="0" y1="-40" x2="0" y2="40" stroke-width="5" transform="rotate(60)"/>
