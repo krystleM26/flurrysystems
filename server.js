@@ -33,6 +33,28 @@ app.use(session({
   }
 }));
 
+// ── Maintenance gate ──────────────────────────────────────────────────────────
+// While the redesign is in progress, every page except the coming-soon page
+// (and the assets/API routes it needs) is hidden from the public. Logging in
+// at /admin lifts the gate for that session so the real site can be previewed.
+const MAINTENANCE_MODE = process.env.MAINTENANCE_MODE !== 'false';
+const MAINTENANCE_PATH = path.join(__dirname, 'maintenance.html');
+const MAINTENANCE_ALLOWLIST_PREFIXES = ['/admin', '/api/', '/src/'];
+const MAINTENANCE_ALLOWLIST_EXACT = new Set([
+  '/maintenance.html',
+  '/Flurry Systems Logo with Snowflake Element copy.png',
+  '/favicon.ico'
+]);
+
+app.use((req, res, next) => {
+  if (!MAINTENANCE_MODE) return next();
+  if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+  if (req.session && req.session.authenticated) return next();
+  if (MAINTENANCE_ALLOWLIST_EXACT.has(req.path)) return next();
+  if (MAINTENANCE_ALLOWLIST_PREFIXES.some(prefix => req.path.startsWith(prefix))) return next();
+  return res.sendFile(MAINTENANCE_PATH);
+});
+
 // Serve all static files (HTML, CSS, JS, images, posts/)
 app.use(express.static(path.join(__dirname)));
 
@@ -365,7 +387,7 @@ function buildPostPage({ title, excerpt, tag, content, date }) {
         </div>
         <div class="footer-col">
           <h5>Connect</h5>
-          <ul><li><a href="mailto:hello@flurrysystems.com">Email Us</a></li></ul>
+          <ul><li><a href="mailto:contact@flurrysystems.com">Email Us</a></li></ul>
         </div>
       </div>
       <hr class="footer-divider">

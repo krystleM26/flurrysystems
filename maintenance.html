@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flurry Systems — We'll Be Right Back</title>
+  <meta name="description" content="Flurry Systems is going through a redesign. We'll be back soon — leave your email and we'll let you know when we relaunch.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="src/css/style.css">
+  <style>
+    body {
+      background: linear-gradient(140deg, var(--s900) 0%, var(--s800) 45%, #1E1B4B 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 20px;
+    }
+    .maint-wrap { max-width: 520px; width: 100%; text-align: center; position: relative; z-index: 1; }
+    .maint-logo {
+      width: 84px;
+      height: 84px;
+      border-radius: 16px;
+      object-fit: contain;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow-lg);
+    }
+    .maint-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(99,102,241,.14);
+      border: 1px solid rgba(99,102,241,.32);
+      color: var(--ice);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .maint-title {
+      font-size: clamp(30px, 5.5vw, 44px);
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -1.2px;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .maint-sub {
+      font-size: 16px;
+      color: var(--s300);
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+    .maint-form { display: flex; gap: 10px; margin-bottom: 12px; }
+    .maint-input {
+      flex: 1;
+      padding: 13px 16px;
+      border-radius: var(--r-sm);
+      border: 1.5px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.07);
+      color: var(--white);
+      font-size: 14.5px;
+      font-family: var(--font);
+      outline: none;
+      transition: border-color .18s;
+    }
+    .maint-input::placeholder { color: var(--s400); }
+    .maint-input:focus { border-color: var(--glacier); }
+    .maint-note { font-size: 12.5px; color: var(--s500); }
+    .maint-msg { font-size: 13px; margin-top: 10px; display: none; }
+    .maint-msg.success { color: #34d399; }
+    .maint-msg.error   { color: #f87171; }
+
+    .maint-footer { margin-top: 48px; font-size: 12.5px; color: var(--s500); }
+    .maint-footer a { color: var(--s400); text-decoration: none; }
+    .maint-footer a:hover { color: var(--ice); }
+
+    @media (max-width: 480px) {
+      .maint-form { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="maint-wrap">
+    <img src="Flurry Systems Logo with Snowflake Element copy.png" alt="Flurry Systems" class="maint-logo">
+
+    <span class="maint-badge">Redesign in progress</span>
+
+    <h1 class="maint-title">We'll be right back.</h1>
+    <p class="maint-sub">
+      Flurry Systems is getting a fresh look. We're heads-down on a redesign and
+      will be back online soon — leave your email and we'll let you know the moment we relaunch.
+    </p>
+
+    <form class="maint-form" onsubmit="return handleSignup(event, 'notify')">
+      <input type="email" class="maint-input" id="notifyEmail" placeholder="you@email.com" required>
+      <button type="submit" class="btn btn-primary" id="notifyBtn">Notify Me</button>
+    </form>
+    <p class="maint-note" id="notifyNote">No spam, ever. Unsubscribe anytime.</p>
+    <p class="maint-msg" id="notifyMsg"></p>
+
+    <p class="maint-footer">
+      &copy; 2026 Flurry Systems &middot; <a href="mailto:contact@flurrysystems.com">contact@flurrysystems.com</a>
+    </p>
+  </div>
+
+  <script>
+    async function handleSignup(e, kind) {
+      e.preventDefault();
+      const btn   = document.getElementById(kind + 'Btn');
+      const msg   = document.getElementById(kind + 'Msg');
+      const input = document.getElementById(kind + 'Email');
+      const email = input.value.trim();
+      const originalLabel = btn.textContent;
+
+      btn.textContent = 'Submitting…';
+      btn.disabled = true;
+      msg.style.display = 'none';
+
+      try {
+        const r = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const d = await r.json();
+
+        if (r.ok) {
+          msg.textContent = "You're on the list!";
+          msg.className = 'maint-msg success';
+          msg.style.display = 'block';
+          input.value = '';
+        } else {
+          msg.textContent = d.error || 'Something went wrong — try again.';
+          msg.className = 'maint-msg error';
+          msg.style.display = 'block';
+        }
+      } catch {
+        msg.textContent = 'Something went wrong — try again.';
+        msg.className = 'maint-msg error';
+        msg.style.display = 'block';
+      }
+
+      btn.textContent = originalLabel;
+      btn.disabled = false;
+      return false;
+    }
+  </script>
+</body>
+</html>
