@@ -2,22 +2,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 
 :root {
-  --snow:         #F4F6F8;
-  --frost:        #DCE0E8;
-  --ice-light:    #E8C9CE;
-  --ice:          #A8505C;
-  --glacier:      #82303C;
-  --deep-glacier: #68212C;
-  --ocean:        #4F1822;
-  --s100: #EDEFF3;
-  --s200: #DCE0E8;
-  --s300: #C2C9D3;
-  --s400: #8EA1AE;
-  --s500: #76838D;
-  --s600: #685652;
-  --s700: #4F4441;
-  --s800: #32404A;
-  --s900: #27363F;
+  --snow:         #F8FAFC;
+  --frost:        #E2E8F0;
+  --ice-light:    #E0E7FF;
+  --ice:          #818CF8;
+  --glacier:      #6366F1;
+  --deep-glacier: #4F46E5;
+  --ocean:        #3730A3;
+  --s100: #F1F5F9;
+  --s200: #E2E8F0;
+  --s300: #CBD5E1;
+  --s400: #94A3B8;
+  --s500: #64748B;
+  --s600: #475569;
+  --s700: #334155;
+  --s800: #1E293B;
+  --s900: #0F172A;
   --white: #FFFFFF;
   --green: #10B981;
 
@@ -111,7 +111,7 @@ body {
 
 /* ── HERO ────────────────────────────────────── */
 .hero {
-  background: linear-gradient(140deg, var(--s900) 0%, var(--s800) 45%, #3A1620 100%);
+  background: linear-gradient(140deg, var(--s900) 0%, var(--s800) 45%, #1E1B4B 100%);
   padding: 108px 28px 96px;
   position: relative;
   overflow: hidden;
@@ -122,8 +122,8 @@ body {
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle at 70% 20%, rgba(130,48,60,.12) 0%, transparent 55%),
-    radial-gradient(circle at 15% 80%, rgba(104,33,44,.10) 0%, transparent 50%);
+    radial-gradient(circle at 70% 20%, rgba(99,102,241,.12) 0%, transparent 55%),
+    radial-gradient(circle at 15% 80%, rgba(79,70,229,.10) 0%, transparent 50%);
   pointer-events: none;
 }
 .hero-inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
@@ -132,8 +132,8 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(130,48,60,.12);
-  border: 1px solid rgba(130,48,60,.28);
+  background: rgba(99,102,241,.12);
+  border: 1px solid rgba(99,102,241,.28);
   color: var(--ice);
   padding: 6px 16px;
   border-radius: 100px;
@@ -191,7 +191,7 @@ body {
 .btn-primary:hover {
   background: var(--deep-glacier);
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(130,48,60,.35);
+  box-shadow: 0 6px 20px rgba(99,102,241,.35);
 }
 .btn-outline {
   background: transparent;
@@ -247,8 +247,8 @@ body {
 .product-badge {
   display: inline-flex;
   align-items: center;
-  background: #F7ECEE;
-  border: 1px solid #E8C9CE;
+  background: #EEF2FF;
+  border: 1px solid #C7D2FE;
   border-radius: 100px;
   padding: 5px 14px;
   font-size: 12px;
@@ -292,7 +292,7 @@ body {
   position: absolute;
   top: -40%; right: -20%;
   width: 340px; height: 340px;
-  background: radial-gradient(circle, rgba(130,48,60,.18), transparent 65%);
+  background: radial-gradient(circle, rgba(99,102,241,.18), transparent 65%);
   pointer-events: none;
 }
 .product-visual::after {
@@ -300,7 +300,7 @@ body {
   position: absolute;
   bottom: -30%; left: -10%;
   width: 240px; height: 240px;
-  background: radial-gradient(circle, rgba(104,33,44,.10), transparent 65%);
+  background: radial-gradient(circle, rgba(79,70,229,.10), transparent 65%);
   pointer-events: none;
 }
 
@@ -337,8 +337,8 @@ body {
 .clock-period { font-size: 12.5px; color: var(--s400); margin-bottom: 28px; }
 .clock-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .clock-stat {
-  background: rgba(130,48,60,.08);
-  border: 1px solid rgba(130,48,60,.18);
+  background: rgba(99,102,241,.08);
+  border: 1px solid rgba(99,102,241,.18);
   border-radius: 11px;
   padding: 14px 10px;
 }
@@ -347,7 +347,7 @@ body {
 
 /* ── NEWSLETTER ──────────────────────────────── */
 .newsletter-section {
-  background: linear-gradient(140deg, var(--s800) 0%, #3A1620 100%);
+  background: linear-gradient(140deg, var(--s800) 0%, #1E1B4B 100%);
   padding: 88px 28px;
   position: relative;
   overflow: hidden;
@@ -357,7 +357,7 @@ body {
   position: absolute;
   top: -30%; right: -10%;
   width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(130,48,60,.08), transparent 65%);
+  background: radial-gradient(circle, rgba(99,102,241,.08), transparent 65%);
   pointer-events: none;
 }
 .newsletter-inner {
@@ -438,7 +438,7 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 60% 40%, rgba(130,48,60,.10), transparent 60%);
+  background: radial-gradient(circle at 60% 40%, rgba(99,102,241,.10), transparent 60%);
 }
 .page-hero-inner { position: relative; z-index: 1; }
 .page-hero-title {
