@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="fs-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"  stop-color="#7DAEDD"/>
+      <stop offset="50%" stop-color="#7B90C4"/>
+      <stop offset="100%" stop-color="#7B74B7"/>
+    </linearGradient>
+    <linearGradient id="fs-badge" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"  stop-color="#6FA8DC"/>
+      <stop offset="45%" stop-color="#2A4A7C"/>
+      <stop offset="100%" stop-color="#0B1440"/>
+    </linearGradient>
+    <linearGradient id="fs-rim" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"  stop-color="#A9D4F5"/>
+      <stop offset="100%" stop-color="#3E6BA8"/>
+    </linearGradient>
+    <filter id="fs-shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.4" result="blur"/>
+      <feOffset in="blur" dx="5" dy="7" result="offsetBlur"/>
+      <feFlood flood-color="#0B1440" flood-opacity="0.45" result="color"/>
+      <feComposite in="color" in2="offsetBlur" operator="in" result="shadow"/>
+      <feMerge>
+        <feMergeNode in="shadow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="200" height="200" fill="url(#fs-bg)"/>
+
+  <!-- Snowflake -->
+  <g filter="url(#fs-shadow)">
+    <g transform="translate(100,42)" fill="none" stroke="#FFFFFF" stroke-linecap="round">
+      <g stroke-width="2.6">
+        <line x1="0" y1="-19" x2="0" y2="19"/>
+        <line x1="0" y1="-19" x2="0" y2="19" transform="rotate(60)"/>
+        <line x1="0" y1="-19" x2="0" y2="19" transform="rotate(120)"/>
+      </g>
+      <g stroke-width="2">
+        <line x1="-6" y1="-12" x2="6" y2="-12"/>
+        <line x1="-6" y1="12"  x2="6" y2="12"/>
+        <line x1="-6" y1="-12" x2="6" y2="-12" transform="rotate(60)"/>
+        <line x1="-6" y1="12"  x2="6" y2="12"  transform="rotate(60)"/>
+        <line x1="-6" y1="-12" x2="6" y2="-12" transform="rotate(120)"/>
+        <line x1="-6" y1="12"  x2="6" y2="12"  transform="rotate(120)"/>
+      </g>
+      <circle r="2.6" fill="#FFFFFF" stroke="none"/>
+    </g>
+  </g>
+
+  <!-- Badge -->
+  <g filter="url(#fs-shadow)">
+    <rect x="33" y="76" width="134" height="82" rx="16" fill="url(#fs-rim)"/>
+    <rect x="36" y="79" width="128" height="76" rx="13" fill="url(#fs-badge)"/>
+    <rect x="36" y="79" width="128" height="30" rx="13" fill="#FFFFFF" opacity="0.08"/>
+
+    <text x="100" y="122" text-anchor="middle"
+          font-family="'Poppins','Segoe UI',-apple-system,sans-serif"
+          font-size="35" font-weight="800" font-style="italic"
+          letter-spacing="-1" fill="#F7FBFF">Flurry</text>
+
+    <text x="100" y="146" text-anchor="middle"
+          font-family="'Poppins','Segoe UI',-apple-system,sans-serif"
+          font-size="15" font-weight="700"
+          letter-spacing="3" fill="#DCE3F5">SYSTEMS</text>
+  </g>
+</svg>

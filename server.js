@@ -319,7 +319,7 @@ function buildPostPage({ title, excerpt, tag, content, date }) {
   <nav class="nav">
     <div class="nav-inner">
       <a href="../index.html" class="nav-logo">
-        <img src="../Flurry Systems Logo with Snowflake Element copy.png" alt="Flurry Systems" class="nav-logo-icon" style="border-radius:4px;object-fit:contain;">
+        <img src="../src/assets/flurry-badge.png" alt="Flurry Systems" class="nav-logo-icon" style="border-radius:4px;object-fit:contain;">
         <span class="nav-logo-text">Flurry Systems</span>
       </a>
       <ul class="nav-links" id="navLinks">
@@ -368,7 +368,7 @@ function buildPostPage({ title, excerpt, tag, content, date }) {
       <div class="footer-top">
         <div class="footer-brand">
           <a href="../index.html" class="footer-logo">
-            <img src="../Flurry Systems Logo with Snowflake Element copy.png" alt="Flurry Systems" class="footer-logo-icon" style="object-fit:contain;">
+            <img src="../src/assets/flurry-badge.png" alt="Flurry Systems" class="footer-logo-icon" style="object-fit:contain;">
             <span class="footer-logo-text">Flurry Systems</span>
           </a>
           <p class="footer-tagline">Building focused tools that help you work smarter and grow with clarity.</p>
