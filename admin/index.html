@@ -10,19 +10,19 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
     :root {
-      --snow: #F4F6F8;
-      --glacier: #82303C;
-      --deep-glacier: #68212C;
-      --ocean: #4F1822;
-      --s100: #EDEFF3;
-      --s200: #DCE0E8;
-      --s300: #C2C9D3;
-      --s400: #8EA1AE;
-      --s500: #76838D;
-      --s600: #685652;
-      --s700: #4F4441;
-      --s800: #32404A;
-      --s900: #27363F;
+      --snow: #F8FAFC;
+      --glacier: #6366F1;
+      --deep-glacier: #4F46E5;
+      --ocean: #3730A3;
+      --s100: #F1F5F9;
+      --s200: #E2E8F0;
+      --s300: #CBD5E1;
+      --s400: #94A3B8;
+      --s500: #64748B;
+      --s600: #475569;
+      --s700: #334155;
+      --s800: #1E293B;
+      --s900: #0F172A;
       --white: #FFFFFF;
       --green: #10B981;
       --red: #EF4444;
@@ -46,7 +46,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(140deg, var(--s900), var(--s800), #3A1620);
+      background: linear-gradient(140deg, var(--s900), var(--s800), #1E1B4B);
     }
 
     .login-card {
@@ -140,7 +140,7 @@
     .topbar-logo svg { width: 26px; height: 26px; color: var(--glacier); }
     .topbar-logo span { font-size: 15px; font-weight: 700; }
     .topbar-badge {
-      background: rgba(130,48,60,.15);
+      background: rgba(99,102,241,.15);
       color: var(--glacier);
       font-size: 11px;
       font-weight: 700;
@@ -148,7 +148,7 @@
       text-transform: uppercase;
       padding: 3px 10px;
       border-radius: 100px;
-      border: 1px solid rgba(130,48,60,.25);
+      border: 1px solid rgba(99,102,241,.25);
       margin-left: 10px;
     }
     .topbar-right { display: flex; align-items: center; gap: 16px; }
@@ -486,6 +486,68 @@
     .import-note a { color: var(--glacier); }
     .toast.success { background: #064E3B; }
     .toast.error   { background: #7F1D1D; }
+
+    /* ── Business Planner ─────────────────────── */
+    .planner-tabs { display: flex; gap: 4px; flex-wrap: wrap; border-bottom: 1px solid var(--s200); margin-bottom: 24px; }
+    .planner-tab {
+      background: none; border: none; cursor: pointer; font-family: var(--font);
+      font-size: 13.5px; font-weight: 600; color: var(--s500);
+      padding: 10px 14px; border-bottom: 2px solid transparent; margin-bottom: -1px;
+    }
+    .planner-tab:hover { color: var(--s700); }
+    .planner-tab.active { color: var(--glacier); border-bottom-color: var(--glacier); }
+
+    .planner-pane { display: none; }
+    .planner-pane.active { display: block; }
+
+    .planner-h3 { font-size: 18px; font-weight: 700; color: var(--s800); margin-bottom: 16px; }
+    .planner-h4 { font-size: 15px; font-weight: 700; color: var(--s800); margin: 20px 0 12px; }
+
+    .planner-callout { background: var(--s100); border-left: 4px solid var(--glacier); padding: 18px 20px; border-radius: 8px; margin-bottom: 20px; }
+    .planner-callout h3, .planner-callout h4 { color: var(--s800); margin-bottom: 8px; }
+    .planner-callout p { color: var(--s600); font-size: 14px; line-height: 1.6; }
+    .planner-callout.green { background: #ECFDF5; border-left-color: var(--green); }
+
+    .planner-stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 24px; }
+    .planner-stat { background: var(--white); border: 1px solid var(--s200); border-radius: 10px; padding: 18px; }
+    .planner-stat-value { font-size: 24px; font-weight: 800; color: var(--glacier); margin-bottom: 6px; }
+    .planner-stat-label { font-size: 12.5px; color: var(--s500); }
+
+    .planner-check-list { display: flex; flex-direction: column; gap: 10px; }
+    .planner-check-item { font-size: 13.5px; color: var(--s600); padding-left: 22px; position: relative; }
+    .planner-check-item::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+    .planner-check-item strong { display: block; color: var(--s800); font-size: 14px; margin-bottom: 2px; }
+
+    .planner-step { background: var(--white); border: 1px solid var(--s200); border-left: 4px solid var(--s300); border-radius: 8px; padding: 16px 18px; margin-bottom: 12px; }
+    .planner-step h4, .planner-step h5 { font-size: 14.5px; font-weight: 700; color: var(--s800); margin-bottom: 8px; }
+    .planner-step p { font-size: 13.5px; color: var(--s600); line-height: 1.6; margin-bottom: 8px; }
+    .planner-step ul { margin: 0 0 10px 18px; }
+    .planner-step li { font-size: 13px; color: var(--s600); margin-bottom: 3px; }
+    .planner-deliverable { background: var(--s100); border-radius: 6px; padding: 10px 12px; font-size: 12.5px; color: var(--s600); }
+
+    .planner-tip { background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 8px; padding: 14px 16px; font-size: 13.5px; color: #92400E; line-height: 1.6; }
+
+    .planner-pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+    .planner-price-card { position: relative; background: var(--white); border: 2px solid var(--s200); border-radius: 10px; padding: 20px; text-align: center; }
+    .planner-price-card.featured { border-color: var(--glacier); }
+    .planner-price-badge { position: absolute; top: 0; right: 14px; transform: translateY(-50%); background: var(--glacier); color: var(--white); font-size: 10.5px; font-weight: 700; padding: 3px 10px; border-radius: 100px; letter-spacing: .4px; }
+    .planner-price { font-size: 26px; font-weight: 800; color: var(--s800); margin-bottom: 4px; }
+    .planner-price span { font-size: 12px; font-weight: 500; color: var(--s500); }
+    .planner-price-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+    .planner-price-card ul { list-style: none; text-align: left; margin: 0 0 12px; display: flex; flex-direction: column; gap: 6px; }
+    .planner-price-card li { font-size: 12.5px; color: var(--s600); padding-left: 18px; position: relative; }
+    .planner-price-card li::before { content: '✓'; position: absolute; left: 0; color: var(--green); }
+    .planner-price-note { font-size: 11px; color: var(--s400); }
+
+    .planner-setup-fees { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-top: 10px; font-size: 12.5px; color: var(--s600); }
+    .planner-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13px; color: var(--s600); padding: 6px 0; }
+    .planner-cost { color: var(--s400); font-size: 12px; flex-shrink: 0; }
+    .planner-pill { font-size: 11px; font-weight: 700; background: var(--s100); color: var(--s600); padding: 3px 9px; border-radius: 100px; flex-shrink: 0; }
+    .planner-pill.green  { background: #D1FAE5; color: #065F46; }
+    .planner-pill.purple { background: #EDE9FE; color: #5B21B6; }
+
+    .planner-industry-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin-bottom: 8px; }
+    .planner-industry { background: var(--white); border: 1px solid var(--s200); border-radius: 8px; padding: 10px 14px; font-size: 13px; font-weight: 500; color: var(--s700); }
   </style>
 </head>
 <body>
@@ -549,7 +611,7 @@
         <span class="topbar-badge">Admin</span>
       </div>
       <div class="topbar-right">
-        <a href="../blog.html" target="_blank" class="topbar-link">View Blog ↗</a>
+        <a href="https://flurryfieldnotes.substack.com/" target="_blank" class="topbar-link">View Blog ↗</a>
         <button class="btn-logout" onclick="handleLogout()">Sign Out</button>
       </div>
     </header>
@@ -570,6 +632,12 @@
         <button class="sidebar-link" id="navImport" onclick="showView('import')">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Import from Substack
+        </button>
+
+        <p class="sidebar-section">Tools</p>
+        <button class="sidebar-link" id="navPlanner" onclick="showView('planner')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
+          Business Planner
         </button>
       </nav>
 
@@ -739,6 +807,247 @@
             </p>
           </div>
         </div>
+
+        <!-- Business Planner -->
+        <div class="view" id="viewPlanner">
+          <div class="panel-header">
+            <div>
+              <h1 class="panel-title">Business Planner</h1>
+              <p class="panel-subtitle">Internal planning notes — not visible to site visitors</p>
+            </div>
+          </div>
+
+          <div class="planner-tabs">
+            <button class="planner-tab active" data-tab="overview" onclick="showPlannerTab('overview')">Overview</button>
+            <button class="planner-tab" data-tab="services" onclick="showPlannerTab('services')">Service Design</button>
+            <button class="planner-tab" data-tab="pricing" onclick="showPlannerTab('pricing')">Pricing Model</button>
+            <button class="planner-tab" data-tab="clients" onclick="showPlannerTab('clients')">First Clients</button>
+            <button class="planner-tab" data-tab="tools" onclick="showPlannerTab('tools')">Tools &amp; Stack</button>
+            <button class="planner-tab" data-tab="launch" onclick="showPlannerTab('launch')">Launch Plan</button>
+          </div>
+
+          <!-- Overview -->
+          <div class="planner-pane active" data-pane="overview">
+            <div class="planner-callout">
+              <h3>Your Business Foundation</h3>
+              <p>Flurry Systems will help organizations integrate AI into their daily workflows through subscription-based implementation and support.</p>
+            </div>
+
+            <div class="planner-stat-grid">
+              <div class="planner-stat"><div class="planner-stat-value">$500&ndash;5k+</div><div class="planner-stat-label">Monthly recurring revenue per client</div></div>
+              <div class="planner-stat"><div class="planner-stat-value">10&ndash;15hrs</div><div class="planner-stat-label">Weekly time commitment to start</div></div>
+              <div class="planner-stat"><div class="planner-stat-value">2&ndash;3</div><div class="planner-stat-label">Initial clients recommended</div></div>
+            </div>
+
+            <h4 class="planner-h4">Your Value Proposition</h4>
+            <div class="planner-check-list">
+              <div class="planner-check-item"><strong>Practical Implementation</strong><span>You do not just consult — you actually build and deploy AI solutions</span></div>
+              <div class="planner-check-item"><strong>Ongoing Optimization</strong><span>Monthly reviews and adjustments ensure clients get continuous value</span></div>
+              <div class="planner-check-item"><strong>Team Training</strong><span>You ensure adoption through hands-on training and documentation</span></div>
+            </div>
+          </div>
+
+          <!-- Service Design -->
+          <div class="planner-pane" data-pane="services">
+            <h3 class="planner-h3">Core Service Components</h3>
+            <div class="planner-step" style="border-left-color:#8b5cf6;">
+              <h4>1. Discovery &amp; Workflow Audit (Week 1)</h4>
+              <p>Interview key team members, map current workflows, identify AI opportunities with highest ROI potential.</p>
+              <div class="planner-deliverable"><strong>Deliverable:</strong> Workflow analysis document with 3&ndash;5 prioritized AI implementation opportunities</div>
+            </div>
+            <div class="planner-step" style="border-left-color:#3b82f6;">
+              <h4>2. AI Solution Design (Week 2)</h4>
+              <p>Design custom AI agents and integrations, select appropriate tools and platforms, create implementation roadmap.</p>
+              <div class="planner-deliverable"><strong>Deliverable:</strong> Technical implementation plan with tool selections and timeline</div>
+            </div>
+            <div class="planner-step" style="border-left-color:#22c55e;">
+              <h4>3. Implementation (Weeks 3&ndash;4)</h4>
+              <p>Build and configure AI agents, integrate with existing tools, test workflows thoroughly, create documentation.</p>
+              <div class="planner-deliverable"><strong>Deliverable:</strong> Deployed AI solutions with user documentation</div>
+            </div>
+            <div class="planner-step" style="border-left-color:#f97316;">
+              <h4>4. Training &amp; Handoff (Week 5)</h4>
+              <p>Conduct hands-on training sessions, provide SOPs and guides, establish success metrics.</p>
+              <div class="planner-deliverable"><strong>Deliverable:</strong> Trained team with operational AI workflows</div>
+            </div>
+            <div class="planner-step" style="border-left-color:var(--glacier);">
+              <h4>5. Ongoing Support (Monthly)</h4>
+              <p>Monthly optimization reviews, troubleshooting support, updates for new AI capabilities, performance reporting.</p>
+              <div class="planner-deliverable"><strong>Deliverable:</strong> Monthly report with metrics, improvements, and recommendations</div>
+            </div>
+            <div class="planner-tip">
+              <strong>Pro Tip:</strong> Start with one workflow type and perfect it. Then replicate this proven solution across multiple clients before expanding to other workflow types.
+            </div>
+          </div>
+
+          <!-- Pricing Model -->
+          <div class="planner-pane" data-pane="pricing">
+            <h3 class="planner-h3">Subscription Pricing Tiers</h3>
+            <div class="planner-pricing-grid">
+              <div class="planner-price-card">
+                <div class="planner-price">$750<span>/mo</span></div>
+                <h4>Starter</h4>
+                <ul>
+                  <li>1&ndash;2 AI workflows</li>
+                  <li>Initial setup &amp; training</li>
+                  <li>Email support</li>
+                  <li>Monthly optimization</li>
+                </ul>
+                <div class="planner-price-note">Best for: Small businesses, solopreneurs</div>
+              </div>
+              <div class="planner-price-card featured">
+                <div class="planner-price-badge">POPULAR</div>
+                <div class="planner-price">$2,500<span>/mo</span></div>
+                <h4>Professional</h4>
+                <ul>
+                  <li>3&ndash;5 AI workflows</li>
+                  <li>Custom AI agents</li>
+                  <li>Priority support</li>
+                  <li>Bi-weekly check-ins</li>
+                  <li>Performance reporting</li>
+                </ul>
+                <div class="planner-price-note">Best for: Growing companies, agencies</div>
+              </div>
+              <div class="planner-price-card">
+                <div class="planner-price">$5,000+<span>/mo</span></div>
+                <h4>Enterprise</h4>
+                <ul>
+                  <li>Unlimited workflows</li>
+                  <li>Dedicated support</li>
+                  <li>Weekly optimization</li>
+                  <li>Multi-department rollout</li>
+                  <li>Custom integrations</li>
+                </ul>
+                <div class="planner-price-note">Best for: Large organizations</div>
+              </div>
+            </div>
+
+            <div class="planner-callout" style="margin-top:20px;">
+              <h4>One-Time Setup Fee</h4>
+              <p>Consider charging a one-time setup fee equal to 1&ndash;2 months of subscription for initial discovery, implementation, and training.</p>
+              <div class="planner-setup-fees">
+                <div><strong>Starter:</strong> $750&ndash;1,500</div>
+                <div><strong>Professional:</strong> $2,500&ndash;5,000</div>
+                <div><strong>Enterprise:</strong> $5,000&ndash;10,000</div>
+              </div>
+            </div>
+
+            <div class="planner-callout green">
+              <h4>Revenue Projections</h4>
+              <p>Based on starting with 3 clients at Starter tier:</p>
+              <div class="planner-row"><span>Month 1&ndash;3: 3 Starter clients</span><strong>$2,250/month</strong></div>
+              <div class="planner-row"><span>Month 4&ndash;6: 2 Starter + 3 Professional</span><strong>$9,000/month</strong></div>
+              <div class="planner-row"><span>Month 7&ndash;12: 3 Starter + 5 Professional + 1 Enterprise</span><strong>$19,750/month</strong></div>
+            </div>
+          </div>
+
+          <!-- First Clients -->
+          <div class="planner-pane" data-pane="clients">
+            <h3 class="planner-h3">Finding Your First Clients</h3>
+            <h4 class="planner-h4">Target Industries</h4>
+            <div class="planner-industry-grid">
+              <div class="planner-industry">Professional Services</div>
+              <div class="planner-industry">Real Estate</div>
+              <div class="planner-industry">Healthcare</div>
+              <div class="planner-industry">E-commerce</div>
+              <div class="planner-industry">Marketing Agencies</div>
+              <div class="planner-industry">Legal</div>
+              <div class="planner-industry">Finance</div>
+              <div class="planner-industry">SaaS Companies</div>
+            </div>
+
+            <h4 class="planner-h4">Client Acquisition Strategy</h4>
+            <div class="planner-step">
+              <h5>1. LinkedIn Outreach (Weeks 1&ndash;2)</h5>
+              <p>Identify 50&ndash;100 decision-makers in your target industries. Share valuable content and reach out with personalized messages.</p>
+              <div class="planner-deliverable"><strong>Template:</strong> Hi [Name], I noticed [Company] is in [industry]. I help businesses save 10&ndash;15 hours per week by automating [specific workflow]. Open to a 15-minute chat?</div>
+            </div>
+            <div class="planner-step">
+              <h5>2. Free Workflow Audit (Weeks 2&ndash;4)</h5>
+              <p>Offer 5 free 30-minute workflow audits. Identify 2&ndash;3 AI opportunities. Convert 40&ndash;60% to paid clients.</p>
+            </div>
+            <div class="planner-step">
+              <h5>3. Industry-Specific Content</h5>
+              <p>Create LinkedIn posts and case studies showing specific AI implementations in your target industries.</p>
+            </div>
+            <div class="planner-step">
+              <h5>4. Referral Network</h5>
+              <p>Partner with complementary service providers who can refer clients. Offer 10&ndash;15% referral fees.</p>
+            </div>
+          </div>
+
+          <!-- Tools & Stack -->
+          <div class="planner-pane" data-pane="tools">
+            <h3 class="planner-h3">Your AI Implementation Stack</h3>
+            <div class="planner-step" style="border-left-color:#3b82f6;">
+              <h4>AI Platforms &amp; APIs</h4>
+              <div class="planner-row"><span><strong>Claude API</strong> &mdash; complex reasoning, document analysis</span><span class="planner-cost">~$0.01/query</span></div>
+              <div class="planner-row"><span><strong>OpenAI API</strong> &mdash; GPT-4 for versatile tasks</span><span class="planner-cost">~$0.02/query</span></div>
+              <div class="planner-row"><span><strong>Make.com or Zapier</strong> &mdash; workflow automation</span><span class="planner-cost">$29&ndash;69/month</span></div>
+            </div>
+            <div class="planner-step" style="border-left-color:#22c55e;">
+              <h4>Agent Building Tools</h4>
+              <p><strong>Relevance AI</strong> &mdash; build and deploy AI agents without code</p>
+              <p><strong>LangChain</strong> &mdash; for custom agent development</p>
+              <p><strong>Voiceflow</strong> &mdash; conversational AI agents</p>
+              <p><strong>n8n</strong> &mdash; open-source workflow automation</p>
+            </div>
+            <div class="planner-step" style="border-left-color:#8b5cf6;">
+              <h4>Integration &amp; Data Tools</h4>
+              <p><strong>Airtable</strong> &mdash; database for agent data</p>
+              <p><strong>Google Workspace APIs</strong> &mdash; Gmail, Docs, Sheets</p>
+              <p><strong>Slack API</strong> &mdash; deploy agents in workspaces</p>
+              <p><strong>CRM APIs</strong> &mdash; HubSpot, Salesforce integrations</p>
+            </div>
+            <div class="planner-step" style="border-left-color:#f97316;">
+              <h4>Client Management</h4>
+              <p><strong>Notion</strong> &mdash; project management and client portal</p>
+              <p><strong>Loom</strong> &mdash; training videos</p>
+              <p><strong>Calendly</strong> &mdash; client scheduling</p>
+              <p><strong>Stripe</strong> &mdash; subscription billing</p>
+            </div>
+            <div class="planner-callout">
+              <h4>Estimated Monthly Tool Costs</h4>
+              <div class="planner-row"><span>Starter (3 clients):</span><strong>$150&ndash;250/month</strong></div>
+              <div class="planner-row"><span>Growth (8 clients):</span><strong>$300&ndash;500/month</strong></div>
+              <div class="planner-row"><span>Scale (15 clients):</span><strong>$500&ndash;800/month</strong></div>
+            </div>
+          </div>
+
+          <!-- Launch Plan -->
+          <div class="planner-pane" data-pane="launch">
+            <h3 class="planner-h3">90-Day Launch Plan</h3>
+            <div class="planner-step" style="border-left-color:var(--glacier);">
+              <div class="planner-row"><h4>Month 1: Foundation</h4><span class="planner-pill">Weeks 1&ndash;4</span></div>
+              <p><strong>Week 1: Setup</strong></p>
+              <ul><li>Register business, set up Stripe</li><li>Create LinkedIn profile</li><li>Set up basic website</li><li>Choose 2&ndash;3 target industries</li></ul>
+              <p><strong>Week 2: Tool Mastery</strong></p>
+              <ul><li>Set up Make.com and Claude API</li><li>Build 2&ndash;3 demo workflows</li><li>Create templates</li></ul>
+              <p><strong>Week 3&ndash;4: Outreach</strong></p>
+              <ul><li>Identify 50 potential clients</li><li>Share 3&ndash;4 valuable posts</li><li>Offer 5 free workflow audits</li></ul>
+            </div>
+            <div class="planner-step" style="border-left-color:#22c55e;">
+              <div class="planner-row"><h4>Month 2: First Clients</h4><span class="planner-pill green">Weeks 5&ndash;8</span></div>
+              <p><strong>Week 5&ndash;6: Onboarding</strong></p>
+              <ul><li>Sign 2&ndash;3 clients at Starter tier</li><li>Complete workflow audits</li><li>Begin implementation</li></ul>
+              <p><strong>Week 7&ndash;8: Implementation</strong></p>
+              <ul><li>Deploy first AI workflows</li><li>Document what works</li><li>Create case study drafts</li></ul>
+            </div>
+            <div class="planner-step" style="border-left-color:#8b5cf6;">
+              <div class="planner-row"><h4>Month 3: Scale</h4><span class="planner-pill purple">Weeks 9&ndash;12</span></div>
+              <p><strong>Week 9&ndash;10: Optimization</strong></p>
+              <ul><li>Refine processes based on feedback</li><li>Create reusable templates</li><li>Publish case studies</li></ul>
+              <p><strong>Week 11&ndash;12: Growth</strong></p>
+              <ul><li>Target 2&ndash;3 Professional tier clients</li><li>Build referral partnerships</li><li>Plan for next quarter</li></ul>
+            </div>
+            <div class="planner-callout green">
+              <h4>Success Milestones</h4>
+              <div class="planner-check-item" style="margin-bottom:6px;"><span>Month 1: Tools set up, 5 audits completed</span></div>
+              <div class="planner-check-item" style="margin-bottom:6px;"><span>Month 2: 2&ndash;3 paying clients, first workflows live</span></div>
+              <div class="planner-check-item"><span>Month 3: 5+ clients, proven process, case studies published</span></div>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   </div>
@@ -820,7 +1129,7 @@
     }
 
     // ── Navigation ────────────────────────────────────────────────────────────
-    const NAV_MAP = { editor: 'New', posts: 'Posts', import: 'Import' };
+    const NAV_MAP = { editor: 'New', posts: 'Posts', import: 'Import', planner: 'Planner' };
     function showView(name) {
       document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
       document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
@@ -828,6 +1137,13 @@
       const navId = 'nav' + (NAV_MAP[name] || 'Posts');
       const navEl = document.getElementById(navId);
       if (navEl) navEl.classList.add('active');
+    }
+
+    function showPlannerTab(name) {
+      document.querySelectorAll('.planner-pane').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.planner-tab').forEach(t => t.classList.remove('active'));
+      document.querySelector('.planner-pane[data-pane="' + name + '"]').classList.add('active');
+      document.querySelector('.planner-tab[data-tab="' + name + '"]').classList.add('active');
     }
 
     // ── Posts list ────────────────────────────────────────────────────────────

@@ -37,7 +37,7 @@
 
   <!-- ── Page Hero ──────────────────────────────── -->
   <section class="page-hero">
-    <svg style="position:absolute;left:5%;top:50%;transform:translateY(-50%);width:160px;height:160px;color:#82303C;opacity:.06;animation:spin 45s linear infinite;" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true">
+    <svg style="position:absolute;left:5%;top:50%;transform:translateY(-50%);width:160px;height:160px;color:#6366F1;opacity:.06;animation:spin 45s linear infinite;" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true">
       <g transform="translate(50,50)">
         <line x1="0" y1="-43" x2="0" y2="43" stroke-width="5"/>
         <line x1="0" y1="-43" x2="0" y2="43" stroke-width="5" transform="rotate(60)"/>
@@ -231,7 +231,7 @@
     const empty = document.getElementById('emptyState');
 
     const SNOWFLAKE_SVG = `
-      <svg width="36" height="36" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round" style="color:#82303C;opacity:.5;" aria-hidden="true">
+      <svg width="36" height="36" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round" style="color:#6366F1;opacity:.5;" aria-hidden="true">
         <g transform="translate(50,50)">
           <line x1="0" y1="-40" x2="0" y2="40" stroke-width="5"/>
           <line x1="0" y1="-40" x2="0" y2="40" stroke-width="5" transform="rotate(60)"/>
@@ -313,7 +313,7 @@
           }, 4000);
         } else {
           btn.textContent = d.error || 'Try again';
-          btn.style.background = '#EF4444';
+          btn.style.background = '#6366f1';
           setTimeout(() => {
             btn.textContent = 'Subscribe';
             btn.style.background = '';
@@ -322,7 +322,7 @@
         }
       } catch {
         btn.textContent = 'Error — try again';
-        btn.style.background = '#EF4444';
+        btn.style.background = '#6366f1';
         setTimeout(() => {
           btn.textContent = 'Subscribe';
           btn.style.background = '';
