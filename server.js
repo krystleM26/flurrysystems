@@ -7,16 +7,16 @@ const session  = require('express-session');
 const bcrypt   = require('bcryptjs');
 const fs       = require('fs');
 const path     = require('path');
+const crypto   = require('crypto');
 const cheerio  = require('cheerio');
+const db       = require('./lib/db');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
-// ── Password setup ────────────────────────────────────────────────────────────
-// Set ADMIN_PASSWORD env var before first run; the hash is derived at startup.
-// On subsequent runs set ADMIN_PASSWORD_HASH to skip rehashing.
-const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH
-  || bcrypt.hashSync(process.env.ADMIN_PASSWORD || 'changeme123', 12);
+// ── Users (SQLite) ───────────────────────────────────────────────────────────
+const getUserByEmail = db.prepare('SELECT * FROM users WHERE email = ?');
+const getUserById    = db.prepare('SELECT * FROM users WHERE id = ?');
 
 // ── Middleware ────────────────────────────────────────────────────────────────
 app.use(express.json());
@@ -49,7 +49,7 @@ const MAINTENANCE_ALLOWLIST_EXACT = new Set([
 app.use((req, res, next) => {
   if (!MAINTENANCE_MODE) return next();
   if (req.method !== 'GET' && req.method !== 'HEAD') return next();
-  if (req.session && req.session.authenticated) return next();
+  if (req.session && req.session.userId) return next();
   if (MAINTENANCE_ALLOWLIST_EXACT.has(req.path)) return next();
   if (MAINTENANCE_ALLOWLIST_PREFIXES.some(prefix => req.path.startsWith(prefix))) return next();
   return res.sendFile(MAINTENANCE_PATH);
@@ -59,21 +59,34 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname)));
 
 // ── Auth helpers ──────────────────────────────────────────────────────────────
+// Role is re-looked-up on every request (not cached in the session) so that
+// revoking or deleting an account takes effect on the very next request rather
+// than lingering for the rest of the 8-hour cookie window.
 function requireAuth(req, res, next) {
-  if (req.session && req.session.authenticated) return next();
-  res.status(401).json({ error: 'Unauthorized' });
+  const user = req.session && req.session.userId && getUserById.get(req.session.userId);
+  if (!user) return res.status(401).json({ error: 'Unauthorized' });
+  req.user = user;
+  next();
+}
+
+function requireSuperAdmin(req, res, next) {
+  requireAuth(req, res, () => {
+    if (req.user.role !== 'super_admin') return res.status(403).json({ error: 'Forbidden' });
+    next();
+  });
 }
 
 // ── API: Auth ─────────────────────────────────────────────────────────────────
 app.post('/api/login', async (req, res) => {
   try {
-    const { password } = req.body;
-    if (!password) return res.status(400).json({ error: 'Password required' });
+    const { email, password } = req.body;
+    if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
 
-    const valid = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
-    if (!valid) return res.status(401).json({ error: 'Incorrect password' });
+    const user = getUserByEmail.get(email.toLowerCase().trim());
+    const valid = user && await bcrypt.compare(password, user.password_hash);
+    if (!valid) return res.status(401).json({ error: 'Invalid email or password' });
 
-    req.session.authenticated = true;
+    req.session.userId = user.id;
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ error: 'Server error' });
@@ -85,7 +98,9 @@ app.post('/api/logout', (req, res) => {
 });
 
 app.get('/api/auth', (req, res) => {
-  res.json({ authenticated: !!(req.session && req.session.authenticated) });
+  const user = req.session && req.session.userId && getUserById.get(req.session.userId);
+  if (!user) return res.json({ authenticated: false });
+  res.json({ authenticated: true, email: user.email, role: user.role, name: user.name });
 });
 
 // ── API: Posts ────────────────────────────────────────────────────────────────
@@ -108,7 +123,7 @@ app.get('/api/posts', (_req, res) => {
 });
 
 // Create a post (admin only)
-app.post('/api/posts', requireAuth, (req, res) => {
+app.post('/api/posts', requireSuperAdmin, (req, res) => {
   const { title, excerpt, tag, content } = req.body;
   if (!title || !content) return res.status(400).json({ error: 'Title and content are required' });
 
@@ -137,7 +152,7 @@ app.post('/api/posts', requireAuth, (req, res) => {
 });
 
 // Update a post (admin only)
-app.put('/api/posts/:id', requireAuth, (req, res) => {
+app.put('/api/posts/:id', requireSuperAdmin, (req, res) => {
   const id = parseInt(req.params.id, 10);
   const { title, excerpt, tag, content } = req.body;
   if (!title || !content) return res.status(400).json({ error: 'Title and content are required' });
@@ -162,7 +177,7 @@ app.put('/api/posts/:id', requireAuth, (req, res) => {
 });
 
 // Delete a post (admin only)
-app.delete('/api/posts/:id', requireAuth, (req, res) => {
+app.delete('/api/posts/:id', requireSuperAdmin, (req, res) => {
   const id = parseInt(req.params.id, 10);
   const manifest = readManifest();
   const idx = manifest.findIndex(p => p.id === id);
@@ -188,23 +203,33 @@ app.post('/api/subscribe', async (req, res) => {
     return res.status(500).json({ error: 'Mailchimp not configured' });
 
   try {
+    // PUT to the member's hash upserts — this both adds new subscribers and
+    // correctly resubscribes anyone who previously unsubscribed. A plain POST
+    // only creates new members: if someone already exists (even as
+    // 'unsubscribed'), Mailchimp returns a "Member Exists" error and their
+    // status never actually flips back to subscribed.
+    const subscriberHash = crypto.createHash('md5').update(email.toLowerCase().trim()).digest('hex');
     const response = await fetch(
-      `https://${MAILCHIMP_DC}.api.mailchimp.com/3.0/lists/${MAILCHIMP_AUDIENCE_ID}/members`,
+      `https://${MAILCHIMP_DC}.api.mailchimp.com/3.0/lists/${MAILCHIMP_AUDIENCE_ID}/members/${subscriberHash}`,
       {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Basic ' + Buffer.from(`anystring:${MAILCHIMP_API_KEY}`).toString('base64')
         },
-        body: JSON.stringify({ email_address: email, status: 'subscribed' })
+        body: JSON.stringify({ email_address: email, status_if_new: 'subscribed', status: 'subscribed' })
       }
     );
 
+    if (response.ok) return res.json({ success: true });
+
     const data = await response.json();
 
-    // 400 with title "Member Exists" means already subscribed — treat as success
-    if (response.ok || data.title === 'Member Exists')
-      return res.json({ success: true });
+    // Mailchimp permanently blocks re-adding a contact who was GDPR-deleted
+    // ("forgotten") from this list — no API call can override that.
+    if (data.title === 'Forgotten Email Not Subscribed') {
+      return res.status(400).json({ error: "This email can't be automatically resubscribed — please contact us directly and we'll add you manually." });
+    }
 
     return res.status(400).json({ error: data.detail || 'Could not subscribe' });
   } catch (err) {
@@ -212,8 +237,141 @@ app.post('/api/subscribe', async (req, res) => {
   }
 });
 
+// ── API: Tickets ──────────────────────────────────────────────────────────────
+const insertTicket = db.prepare(`
+  INSERT INTO tickets (ticket_uid, product, subject, summary, priority, status, user_name, user_email, source_created_label, created_at, updated_at)
+  VALUES (@ticket_uid, @product, @subject, @summary, @priority, 'open', @user_name, @user_email, @source_created_label, @created_at, @created_at)
+`);
+const listTickets      = db.prepare('SELECT * FROM tickets WHERE (@status IS NULL OR status = @status) AND (@product IS NULL OR product = @product) ORDER BY created_at DESC');
+const getTicketById    = db.prepare('SELECT * FROM tickets WHERE id = ?');
+const getTicketByUid   = db.prepare('SELECT * FROM tickets WHERE ticket_uid = ?');
+const listTicketNotes  = db.prepare('SELECT n.*, u.email AS author_email FROM ticket_notes n LEFT JOIN users u ON u.id = n.author_user_id WHERE ticket_id = ? ORDER BY created_at ASC');
+const insertNote       = db.prepare('INSERT INTO ticket_notes (ticket_id, author_user_id, note_type, body, created_at) VALUES (?, ?, ?, ?, ?)');
+const updateTicketStmt = db.prepare('UPDATE tickets SET status = @status, assigned_to = @assigned_to, updated_at = @updated_at WHERE id = @id');
+
+// Ingest a ticket from another product (service-to-service, shared-secret auth)
+app.post('/api/tickets/ingest', (req, res) => {
+  const key = req.get('X-Ticket-Ingest-Key');
+  if (!process.env.TICKETS_INGEST_KEY || key !== process.env.TICKETS_INGEST_KEY) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  const { id, product, subject, priority, summary, userName, userEmail, created } = req.body;
+  if (!id || !product || !subject || !userEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
+    return res.status(400).json({ error: 'id, product, subject, and a valid userEmail are required' });
+  }
+
+  const now = new Date().toISOString();
+  try {
+    insertTicket.run({
+      ticket_uid: id,
+      product,
+      subject,
+      summary: summary || null,
+      priority: ['urgent', 'normal', 'low'].includes(priority) ? priority : 'normal',
+      user_name: userName || null,
+      user_email: userEmail,
+      source_created_label: created || null,
+      created_at: now
+    });
+  } catch (err) {
+    if (err.code === 'SQLITE_CONSTRAINT_UNIQUE' || err.code === 'SQLITE_CONSTRAINT') {
+      return res.json({ success: true, ticket_uid: id, duplicate: true });
+    }
+    return res.status(500).json({ error: 'Server error' });
+  }
+
+  res.status(201).json({ success: true, ticket_uid: id });
+});
+
+// List tickets, optionally filtered by status/product
+app.get('/api/tickets', requireAuth, (req, res) => {
+  const tickets = listTickets.all({
+    status:  req.query.status  || null,
+    product: req.query.product || null
+  });
+  res.json({ tickets });
+});
+
+// Single ticket + its notes
+app.get('/api/tickets/:id', requireAuth, (req, res) => {
+  const ticket = getTicketById.get(req.params.id);
+  if (!ticket) return res.status(404).json({ error: 'Ticket not found' });
+  res.json({ ticket, notes: listTicketNotes.all(ticket.id) });
+});
+
+// Update a ticket's status and/or assignment
+app.patch('/api/tickets/:id', requireAuth, (req, res) => {
+  const ticket = getTicketById.get(req.params.id);
+  if (!ticket) return res.status(404).json({ error: 'Ticket not found' });
+
+  const status      = req.body.status !== undefined ? req.body.status : ticket.status;
+  const assignedTo  = req.body.assigned_to !== undefined ? req.body.assigned_to : ticket.assigned_to;
+  const now         = new Date().toISOString();
+
+  updateTicketStmt.run({ id: ticket.id, status, assigned_to: assignedTo, updated_at: now });
+
+  if (req.body.status !== undefined && req.body.status !== ticket.status) {
+    insertNote.run(ticket.id, req.user.id, 'status_change', `Status changed to ${status} by ${req.user.email}`, now);
+  }
+  if (req.body.assigned_to !== undefined && req.body.assigned_to !== ticket.assigned_to) {
+    const assignee = assignedTo ? getUserById.get(assignedTo) : null;
+    insertNote.run(ticket.id, req.user.id, 'assignment_change', `Assigned to ${assignee ? assignee.email : 'nobody'} by ${req.user.email}`, now);
+  }
+
+  res.json({ success: true, ticket: getTicketById.get(ticket.id) });
+});
+
+// Add an internal note to a ticket
+app.post('/api/tickets/:id/notes', requireAuth, (req, res) => {
+  const ticket = getTicketById.get(req.params.id);
+  if (!ticket) return res.status(404).json({ error: 'Ticket not found' });
+  const { body } = req.body;
+  if (!body || !body.trim()) return res.status(400).json({ error: 'Note body required' });
+
+  const now = new Date().toISOString();
+  const info = insertNote.run(ticket.id, req.user.id, 'note', body.trim(), now);
+  res.status(201).json({ success: true, note: { id: info.lastInsertRowid, ticket_id: ticket.id, author_user_id: req.user.id, author_email: req.user.email, note_type: 'note', body: body.trim(), created_at: now } });
+});
+
+// ── API: Staff (super_admin only) ───────────────────────────────────────────────
+const listStaff   = db.prepare('SELECT id, email, name, role, created_at FROM users ORDER BY created_at ASC');
+const insertStaff = db.prepare(`INSERT INTO users (email, password_hash, role, name, created_at) VALUES (?, ?, 'agent', ?, ?)`);
+const deleteStaff  = db.prepare('DELETE FROM users WHERE id = ?');
+
+app.get('/api/staff', requireSuperAdmin, (_req, res) => {
+  res.json({ staff: listStaff.all() });
+});
+
+app.post('/api/staff', requireSuperAdmin, async (req, res) => {
+  const { email, password, name } = req.body;
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ error: 'Valid email required' });
+  if (!password || password.length < 8) return res.status(400).json({ error: 'Password must be at least 8 characters' });
+
+  try {
+    const info = insertStaff.run(email.toLowerCase().trim(), bcrypt.hashSync(password, 12), name || null, new Date().toISOString());
+    res.status(201).json({ success: true, staff: { id: info.lastInsertRowid, email: email.toLowerCase().trim(), name: name || null, role: 'agent' } });
+  } catch (err) {
+    if (err.code === 'SQLITE_CONSTRAINT_UNIQUE' || err.code === 'SQLITE_CONSTRAINT') {
+      return res.status(409).json({ error: 'An account with that email already exists' });
+    }
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.delete('/api/staff/:id', requireSuperAdmin, (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const target = getUserById.get(id);
+  if (!target) return res.status(404).json({ error: 'Not found' });
+  if (target.role === 'super_admin') return res.status(403).json({ error: 'Cannot delete a super admin account' });
+  if (id === req.user.id) return res.status(403).json({ error: 'Cannot delete your own account' });
+
+  deleteStaff.run(id);
+  res.json({ success: true });
+});
+
 // ── API: Import from URL (Substack → Blog) ────────────────────────────────────
-app.post('/api/import', requireAuth, async (req, res) => {
+app.post('/api/import', requireSuperAdmin, async (req, res) => {
   const { url } = req.body;
   if (!url) return res.status(400).json({ error: 'URL required' });
 

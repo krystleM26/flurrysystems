@@ -17,3 +17,6 @@
 
 # Node (if added later)
 node_modules/
+
+# SQLite ticket database — never commit
+data/
