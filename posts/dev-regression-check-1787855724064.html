@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dev regression check — Flurry Systems Blog</title>
+  <meta name="description" content="">
+  <link rel="stylesheet" href="../src/css/style.css">
+  <style>
+    .post-body { font-size: 17px; line-height: 1.85; color: var(--s700); }
+    .post-body img { max-width: 100%; height: auto; display: block; border-radius: 8px; margin: 1.4em 0; }
+    .post-body h2 { font-size: 26px; font-weight: 700; color: var(--s800); margin: 2em 0 .6em; letter-spacing: -.5px; }
+    .post-body h3 { font-size: 20px; font-weight: 700; color: var(--s800); margin: 1.6em 0 .5em; }
+    .post-body p  { margin-bottom: 1.4em; }
+    .post-body ul, .post-body ol { margin: 0 0 1.4em 1.5em; }
+    .post-body li { margin-bottom: .4em; }
+    .post-body blockquote { border-left: 3px solid var(--glacier); margin: 1.6em 0; padding: .6em 0 .6em 1.4em; color: var(--s500); font-style: italic; }
+    .post-body a  { color: var(--glacier); }
+    .post-body strong { color: var(--s800); }
+    .post-body code { background: var(--s100); border-radius: 4px; padding: 2px 6px; font-size: .9em; font-family: monospace; }
+    .post-body pre { background: var(--s800); color: #e2e8f0; border-radius: 10px; padding: 20px 24px; overflow-x: auto; margin-bottom: 1.4em; }
+    .post-body pre code { background: none; padding: 0; font-size: 14px; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">
+        <img src="../src/assets/flurry-badge.png" alt="Flurry Systems" class="nav-logo-icon" style="border-radius:4px;object-fit:contain;">
+        <span class="nav-logo-text">Flurry Systems</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../index.html#products">Products</a></li>
+        <li><a href="../blog.html" class="active">Blog</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a href="../index.html#newsletter" class="nav-cta">Newsletter</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+          <line x1="3" y1="6"  x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <p class="section-label" style="color:var(--ice);">Product</p>
+      <h1 class="page-hero-title" style="max-width:760px;margin:0 auto 16px;">Dev regression check</h1>
+      <p class="page-hero-sub">August 27, 2026 &middot; Flurry Systems</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner" style="max-width:720px;margin:0 auto;">
+      <div class="post-body">
+        <p>ok</p>
+      </div>
+
+      <div style="margin-top:56px;padding-top:32px;border-top:1px solid var(--s200);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+        <a href="../blog.html" style="color:var(--glacier);text-decoration:none;font-weight:600;font-size:14px;display:flex;align-items:center;gap:6px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Back to Blog
+        </a>
+        <a href="../index.html#newsletter" class="btn btn-primary" style="font-size:14px;padding:10px 20px;">Subscribe for more</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="../index.html" class="footer-logo">
+            <img src="../src/assets/flurry-badge.png" alt="Flurry Systems" class="footer-logo-icon" style="object-fit:contain;">
+            <span class="footer-logo-text">Flurry Systems</span>
+          </a>
+          <p class="footer-tagline">Building focused tools that help you work smarter and grow with clarity.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Products</h5>
+          <ul><li><a href="../index.html#products">Clock Earnings</a></li></ul>
+        </div>
+        <div class="footer-col">
+          <h5>Company</h5>
+          <ul>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../blog.html">Blog</a></li>
+            <li><a href="../index.html#newsletter">Newsletter</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Connect</h5>
+          <ul><li><a href="mailto:contact@flurrysystems.com">Email Us</a></li></ul>
+        </div>
+      </div>
+      <hr class="footer-divider">
+      <div class="footer-bottom">
+        <span>&copy; 2026 Flurry Systems. All rights reserved.</span>
+        <span>Crafted with care in every detail.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('navToggle');
+    const links  = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => links.classList.toggle('open'));
+    links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+  </script>
+</body>
+</html>

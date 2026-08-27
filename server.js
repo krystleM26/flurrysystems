@@ -14,6 +14,12 @@ const db       = require('./lib/db');
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
+// nginx terminates HTTPS and proxies to this process over plain HTTP, so
+// Express sees every request as insecure unless told to trust that proxy.
+// Without this, cookie.secure=true below silently drops the session cookie
+// on every response in production — logins "succeed" but nothing else works.
+app.set('trust proxy', 1);
+
 // ── Users (SQLite) ───────────────────────────────────────────────────────────
 const getUserByEmail = db.prepare('SELECT * FROM users WHERE email = ?');
 const getUserById    = db.prepare('SELECT * FROM users WHERE id = ?');
