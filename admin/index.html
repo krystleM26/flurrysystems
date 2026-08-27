@@ -292,6 +292,15 @@
       font-size: 11.5px;
       font-weight: 600;
     }
+    .status-pill {
+      display: inline-block;
+      border-radius: 100px;
+      padding: 2px 10px;
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+    .status-pill.published { background: #D1FAE5; color: #065F46; }
+    .status-pill.draft      { background: var(--s100); color: var(--s500); }
     .post-actions { display: flex; gap: 8px; }
     .empty-table {
       text-align: center;
@@ -548,6 +557,97 @@
 
     .planner-industry-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin-bottom: 8px; }
     .planner-industry { background: var(--white); border: 1px solid var(--s200); border-radius: 8px; padding: 10px 14px; font-size: 13px; font-weight: 500; color: var(--s700); }
+
+    /* ── Tickets ───────────────────────────────── */
+    .ticket-filter {
+      padding: 8px 12px;
+      border: 1.5px solid var(--s200);
+      border-radius: 7px;
+      font-size: 13px;
+      font-family: var(--font);
+      color: var(--s700);
+      background: var(--white);
+    }
+    .ticket-row { cursor: pointer; }
+    .priority-pill, .tstatus-pill {
+      display: inline-block;
+      border-radius: 100px;
+      padding: 2px 10px;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+    .priority-pill.urgent { background: #FEE2E2; color: #991B1B; }
+    .priority-pill.normal { background: var(--s100); color: var(--s600); }
+    .priority-pill.low    { background: #E0E7FF; color: #3730A3; }
+    .tstatus-pill.open        { background: #FEE2E2; color: #991B1B; }
+    .tstatus-pill.in_progress { background: #FEF3C7; color: #92400E; }
+    .tstatus-pill.waiting     { background: #E0E7FF; color: #3730A3; }
+    .tstatus-pill.closed      { background: #D1FAE5; color: #065F46; }
+
+    /* ── Modal ─────────────────────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,.5);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-card {
+      background: var(--white);
+      border-radius: 14px;
+      width: 100%;
+      max-width: 560px;
+      max-height: 86vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .modal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--s200);
+    }
+    .modal-eyebrow { font-size: 11.5px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--s400); margin-bottom: 4px; }
+    .modal-header h3 { font-size: 17px; font-weight: 700; color: var(--s800); }
+    .modal-body { padding: 20px 24px; overflow-y: auto; }
+    .ticket-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .ticket-meta div { font-size: 12px; color: var(--s500); }
+    .ticket-meta strong { display: block; font-size: 13.5px; color: var(--s800); font-weight: 600; margin-top: 2px; }
+    .ticket-summary { font-size: 14px; color: var(--s600); line-height: 1.6; background: var(--s100); border-radius: 8px; padding: 12px 14px; margin-bottom: 20px; }
+    .ticket-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .ticket-controls select {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1.5px solid var(--s200);
+      border-radius: 7px;
+      font-size: 13.5px;
+      font-family: var(--font);
+      color: var(--s800);
+      background: var(--white);
+    }
+    .ticket-notes { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; max-height: 220px; overflow-y: auto; }
+    .ticket-note { background: var(--s100); border-radius: 8px; padding: 10px 12px; font-size: 13px; color: var(--s700); }
+    .ticket-note-meta { font-size: 11px; color: var(--s400); margin-bottom: 4px; }
+    .ticket-note.system { background: none; border: 1px dashed var(--s200); color: var(--s500); font-style: italic; }
+    .ticket-note-form { display: flex; gap: 8px; align-items: flex-start; }
+    .ticket-note-form textarea {
+      flex: 1;
+      padding: 9px 12px;
+      border: 1.5px solid var(--s200);
+      border-radius: 7px;
+      font-size: 13.5px;
+      font-family: var(--font);
+      color: var(--s800);
+      resize: vertical;
+    }
   </style>
 </head>
 <body>
@@ -675,13 +775,14 @@
             <thead>
               <tr>
                 <th>Title</th>
+                <th>Status</th>
                 <th>Tag</th>
                 <th>Date</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody id="postsTableBody">
-              <tr><td colspan="4" class="empty-table">
+              <tr><td colspan="5" class="empty-table">
                 <svg width="32" height="32" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round" style="opacity:.3;color:#8EA1AE;">
                   <g transform="translate(50,50)">
                     <line x1="0" y1="-40" x2="0" y2="40" stroke-width="5"/>
@@ -740,7 +841,8 @@
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
                     Publish Post
                   </button>
-                  <button class="save-draft-btn" onclick="showView('posts')">Cancel</button>
+                  <button class="save-draft-btn" id="draftBtn" onclick="handleSaveDraft()">Save Draft</button>
+                  <button class="btn-sm btn-ghost" style="width:100%;justify-content:center;" onclick="showView('posts')">Cancel</button>
                   <input type="hidden" id="editingPostId" value="">
                 </div>
               </div>
@@ -1062,6 +1164,138 @@
             </div>
           </div>
         </div>
+
+        <!-- Tickets -->
+        <div class="view" id="viewTickets">
+          <div class="panel-header">
+            <div>
+              <h1 class="panel-title">Support Tickets</h1>
+              <p class="panel-subtitle">Tickets from ClockEarnings and other products</p>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <select id="ticketStatusFilter" class="ticket-filter" onchange="loadTickets()">
+                <option value="">All statuses</option>
+                <option value="open">Open</option>
+                <option value="in_progress">In progress</option>
+                <option value="waiting">Waiting</option>
+                <option value="closed">Closed</option>
+              </select>
+              <select id="ticketProductFilter" class="ticket-filter" onchange="loadTickets()">
+                <option value="">All products</option>
+                <option value="ClockEarnings">ClockEarnings</option>
+              </select>
+              <button class="btn-sm btn-ghost" onclick="loadTickets()">Refresh</button>
+            </div>
+          </div>
+
+          <table class="posts-table">
+            <thead>
+              <tr>
+                <th>Ticket</th>
+                <th>Subject</th>
+                <th>Product</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Requester</th>
+                <th>Updated</th>
+              </tr>
+            </thead>
+            <tbody id="ticketsTableBody">
+              <tr><td colspan="7" class="empty-table"><p>No tickets yet.</p></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Ticket detail modal -->
+        <div class="modal-overlay" id="ticketModal" onclick="if(event.target===this) closeTicketModal()">
+          <div class="modal-card">
+            <div class="modal-header">
+              <div>
+                <p class="modal-eyebrow" id="ticketModalUid"></p>
+                <h3 id="ticketModalSubject"></h3>
+              </div>
+              <button class="btn-sm btn-ghost" onclick="closeTicketModal()">Close</button>
+            </div>
+            <div class="modal-body">
+              <div class="ticket-meta">
+                <div><span>Requester</span><strong id="ticketModalRequester"></strong></div>
+                <div><span>Email</span><strong id="ticketModalEmail"></strong></div>
+                <div><span>Product</span><strong id="ticketModalProduct"></strong></div>
+                <div><span>Submitted</span><strong id="ticketModalCreated"></strong></div>
+              </div>
+              <p class="ticket-summary" id="ticketModalSummary"></p>
+
+              <div class="ticket-controls">
+                <div class="form-group">
+                  <label>Status</label>
+                  <select id="ticketModalStatus" onchange="updateTicket()">
+                    <option value="open">Open</option>
+                    <option value="in_progress">In progress</option>
+                    <option value="waiting">Waiting</option>
+                    <option value="closed">Closed</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Assigned to</label>
+                  <select id="ticketModalAssignee" onchange="updateTicket()">
+                    <option value="">Unassigned</option>
+                  </select>
+                </div>
+              </div>
+
+              <a id="ticketModalReply" class="btn-sm btn-primary" href="#" style="margin-bottom:20px;">Reply by Email</a>
+
+              <div class="ticket-notes" id="ticketModalNotes"></div>
+
+              <div class="ticket-note-form">
+                <textarea id="ticketNoteBody" placeholder="Add an internal note…" rows="2"></textarea>
+                <button class="btn-sm btn-primary" onclick="addTicketNote()">Add Note</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Staff -->
+        <div class="view" id="viewStaff">
+          <div class="panel-header">
+            <div>
+              <h1 class="panel-title">Staff</h1>
+              <p class="panel-subtitle">Accounts that can log into this admin panel</p>
+            </div>
+          </div>
+
+          <table class="posts-table" style="margin-bottom:28px;">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Added</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="staffTableBody">
+              <tr><td colspan="5" class="empty-table"><p>No staff accounts yet.</p></td></tr>
+            </tbody>
+          </table>
+
+          <div class="import-card" style="max-width:480px;">
+            <h4 style="font-size:15px;font-weight:700;color:var(--s800);margin-bottom:16px;">Add an agent</h4>
+            <div class="form-group" style="margin-bottom:12px;">
+              <label for="staffEmail">Email</label>
+              <input type="email" id="staffEmail" placeholder="agent@flurrysystems.com">
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+              <label for="staffName">Name <span style="font-weight:400;color:var(--s400);">(optional)</span></label>
+              <input type="text" id="staffName" placeholder="Jane Doe">
+            </div>
+            <div class="form-group" style="margin-bottom:16px;">
+              <label for="staffPassword">Temporary password</label>
+              <input type="text" id="staffPassword" placeholder="At least 8 characters">
+            </div>
+            <button class="btn-sm btn-primary" onclick="addStaff()">Add Agent</button>
+          </div>
+        </div>
       </main>
     </div>
   </div>
@@ -1090,12 +1324,15 @@
 
     // ── State ─────────────────────────────────────────────────────────────────
     let posts = [];
+    let currentRole  = null;
+    let currentEmail = null;
+    let staff = [];
 
     // ── Auth ──────────────────────────────────────────────────────────────────
     async function checkAuth() {
       const r = await fetch('/api/auth');
       const d = await r.json();
-      if (d.authenticated) showAdmin();
+      if (d.authenticated) showAdmin(d.role, d.email);
     }
 
     async function handleLogin(e) {
@@ -1110,11 +1347,18 @@
         const r = await fetch('/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password: document.getElementById('password').value })
+          body: JSON.stringify({
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value
+          })
         });
+        const d = await r.json();
         if (r.ok) {
-          showAdmin();
+          const authR = await fetch('/api/auth');
+          const authD = await authR.json();
+          showAdmin(authD.role, authD.email);
         } else {
+          err.textContent = d.error || 'Invalid email or password.';
           err.style.display = 'block';
           btn.disabled = false;
           btn.textContent = 'Sign In';
@@ -1136,14 +1380,29 @@
       document.getElementById('password').value = '';
     }
 
-    function showAdmin() {
+    function applyRoleVisibility(role) {
+      document.querySelectorAll('[data-role="super_admin"]').forEach(el => {
+        el.style.display = role === 'super_admin' ? '' : 'none';
+      });
+    }
+
+    function showAdmin(role, email) {
+      currentRole  = role;
+      currentEmail = email;
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('adminShell').style.display = 'flex';
-      loadPosts();
+      applyRoleVisibility(role);
+
+      if (role === 'super_admin') {
+        loadPosts();
+      } else {
+        showView('tickets');
+        loadTickets();
+      }
     }
 
     // ── Navigation ────────────────────────────────────────────────────────────
-    const NAV_MAP = { editor: 'New', posts: 'Posts', import: 'Import', planner: 'Planner' };
+    const NAV_MAP = { editor: 'New', posts: 'Posts', import: 'Import', planner: 'Planner', tickets: 'Tickets', staff: 'Staff' };
     function showView(name) {
       document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
       document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
@@ -1162,7 +1421,7 @@
 
     // ── Posts list ────────────────────────────────────────────────────────────
     async function loadPosts() {
-      const r = await fetch('/api/posts');
+      const r = await fetch('/api/posts/all');
       posts = await r.json();
       renderPostsTable();
     }
@@ -1170,7 +1429,7 @@
     function renderPostsTable() {
       const tbody = document.getElementById('postsTableBody');
       if (!posts.length) {
-        tbody.innerHTML = `<tr><td colspan="4" class="empty-table">
+        tbody.innerHTML = `<tr><td colspan="5" class="empty-table">
           <svg width="32" height="32" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-linecap="round" style="opacity:.3;color:#8EA1AE;">
             <g transform="translate(50,50)">
               <line x1="0" y1="-40" x2="0" y2="40" stroke-width="5"/>
@@ -1186,6 +1445,7 @@
       tbody.innerHTML = posts.map(p => `
         <tr>
           <td class="post-title-cell">${esc(p.title)}</td>
+          <td>${p.status === 'draft' ? '<span class="status-pill draft">Draft</span>' : '<span class="status-pill published">Published</span>'}</td>
           <td><span class="post-tag-pill">${esc(p.tag)}</span></td>
           <td>${esc(p.date)}</td>
           <td>
@@ -1282,10 +1542,11 @@
     function updateEditorStatus() {
       const hasTitle   = document.getElementById('postTitle').value.trim().length > 0;
       const hasContent = quill.getLength() > 1;
-      const dot  = document.getElementById('statusDot');
-      const text = document.getElementById('statusText');
-      const slug = document.getElementById('slugPreview');
-      const btn  = document.getElementById('publishBtn');
+      const dot      = document.getElementById('statusDot');
+      const text     = document.getElementById('statusText');
+      const slug     = document.getElementById('slugPreview');
+      const btn      = document.getElementById('publishBtn');
+      const draftBtn = document.getElementById('draftBtn');
 
       if (hasTitle && hasContent) {
         dot.classList.add('green');
@@ -1293,9 +1554,10 @@
         btn.disabled = false;
       } else {
         dot.classList.remove('green');
-        text.textContent = 'Add a title and content';
+        text.textContent = hasTitle ? 'Add content to publish' : 'Add a title and content';
         btn.disabled = true;
       }
+      draftBtn.disabled = !hasTitle;
 
       const title = document.getElementById('postTitle').value.trim();
       slug.textContent = title
@@ -1327,18 +1589,26 @@
       updateEditorStatus();
     }
 
-    async function handlePublish() {
+    function handlePublish() { savePost('published'); }
+    function handleSaveDraft() { savePost('draft'); }
+
+    async function savePost(status) {
       const title   = document.getElementById('postTitle').value.trim();
       const excerpt = document.getElementById('postExcerpt').value.trim();
       const tag     = document.getElementById('postTag').value;
       const content = quill.root.innerHTML;
       const editId  = document.getElementById('editingPostId').value;
 
-      if (!title || quill.getLength() <= 1) return;
+      if (!title) { showToast('Add a title first', 'error'); return; }
+      if (status === 'published' && quill.getLength() <= 1) { showToast('Add some content before publishing', 'error'); return; }
 
-      const btn = document.getElementById('publishBtn');
-      btn.disabled = true;
-      btn.innerHTML = '<span style="opacity:.7">Saving…</span>';
+      const publishBtn = document.getElementById('publishBtn');
+      const draftBtn    = document.getElementById('draftBtn');
+      const activeBtn   = status === 'draft' ? draftBtn : publishBtn;
+      const activeLabel = activeBtn.innerHTML;
+      publishBtn.disabled = true;
+      draftBtn.disabled   = true;
+      activeBtn.innerHTML = '<span style="opacity:.7">Saving…</span>';
 
       try {
         const isEdit = !!editId;
@@ -1348,27 +1618,24 @@
         const r = await fetch(url, {
           method,
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ title, excerpt, tag, content })
+          body: JSON.stringify({ title, excerpt, tag, content, status })
         });
 
         const d = await r.json();
         if (r.ok) {
           await loadPosts();
           showView('posts');
-          showToast(isEdit ? 'Post updated!' : 'Post published!', 'success');
+          showToast(status === 'draft' ? 'Draft saved!' : (isEdit ? 'Post updated!' : 'Post published!'), 'success');
         } else {
           showToast(d.error || 'Something went wrong', 'error');
-          btn.disabled = false;
         }
       } catch {
         showToast('Connection error', 'error');
-        btn.disabled = false;
       }
 
-      // Restore button label
-      const isEdit = !!document.getElementById('editingPostId').value;
-      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-        ${isEdit ? 'Save Changes' : 'Publish Post'}`;
+      publishBtn.disabled = false;
+      draftBtn.disabled   = false;
+      activeBtn.innerHTML = activeLabel;
     }
 
     async function deletePost(id, title) {
@@ -1379,6 +1646,193 @@
         showToast('Post deleted', 'success');
       } else {
         showToast('Failed to delete', 'error');
+      }
+    }
+
+    // ── Tickets ───────────────────────────────────────────────────────────────
+    let tickets = [];
+    let activeTicketId = null;
+
+    async function loadTickets() {
+      const status  = document.getElementById('ticketStatusFilter').value;
+      const product = document.getElementById('ticketProductFilter').value;
+      const params  = new URLSearchParams();
+      if (status)  params.set('status', status);
+      if (product) params.set('product', product);
+
+      const r = await fetch('/api/tickets?' + params.toString());
+      const d = await r.json();
+      tickets = d.tickets || [];
+      renderTicketsTable();
+    }
+
+    function renderTicketsTable() {
+      const tbody = document.getElementById('ticketsTableBody');
+      if (!tickets.length) {
+        tbody.innerHTML = `<tr><td colspan="7" class="empty-table"><p>No tickets yet.</p></td></tr>`;
+        return;
+      }
+      tbody.innerHTML = tickets.map(t => `
+        <tr class="ticket-row" onclick="openTicketModal(${t.id})">
+          <td class="post-title-cell">${esc(t.ticket_uid)}</td>
+          <td>${esc(t.subject)}</td>
+          <td>${esc(t.product)}</td>
+          <td><span class="priority-pill ${esc(t.priority)}">${esc(t.priority)}</span></td>
+          <td><span class="tstatus-pill ${esc(t.status)}">${esc(t.status.replace('_',' '))}</span></td>
+          <td>${esc(t.user_name || t.user_email || '—')}</td>
+          <td>${new Date(t.updated_at).toLocaleString()}</td>
+        </tr>
+      `).join('');
+    }
+
+    async function openTicketModal(id) {
+      activeTicketId = id;
+      const r = await fetch(`/api/tickets/${id}`);
+      if (!r.ok) { showToast('Could not load ticket', 'error'); return; }
+      const d = await r.json();
+      const t = d.ticket;
+
+      document.getElementById('ticketModalUid').textContent     = t.ticket_uid;
+      document.getElementById('ticketModalSubject').textContent = t.subject;
+      document.getElementById('ticketModalRequester').textContent = t.user_name || '—';
+      document.getElementById('ticketModalEmail').textContent     = t.user_email || '—';
+      document.getElementById('ticketModalProduct').textContent   = t.product;
+      document.getElementById('ticketModalCreated').textContent   = t.source_created_label || new Date(t.created_at).toLocaleString();
+      document.getElementById('ticketModalSummary').textContent   = t.summary || '(no summary provided)';
+      document.getElementById('ticketModalStatus').value = t.status;
+
+      const replyLink = document.getElementById('ticketModalReply');
+      if (t.user_email) {
+        replyLink.href = `mailto:${encodeURIComponent(t.user_email)}?subject=${encodeURIComponent('Re: ' + t.subject + ' [' + t.ticket_uid + ']')}`;
+        replyLink.style.display = '';
+      } else {
+        replyLink.style.display = 'none';
+      }
+
+      if (!staff.length) await loadStaff();
+      const assigneeSelect = document.getElementById('ticketModalAssignee');
+      assigneeSelect.innerHTML = '<option value="">Unassigned</option>' +
+        staff.map(s => `<option value="${s.id}" ${t.assigned_to === s.id ? 'selected' : ''}>${esc(s.name || s.email)}</option>`).join('');
+
+      renderTicketNotes(d.notes || []);
+      document.getElementById('ticketModal').classList.add('open');
+    }
+
+    function closeTicketModal() {
+      document.getElementById('ticketModal').classList.remove('open');
+      activeTicketId = null;
+    }
+
+    function renderTicketNotes(notes) {
+      const el = document.getElementById('ticketModalNotes');
+      if (!notes.length) { el.innerHTML = '<p style="font-size:13px;color:var(--s400);">No notes yet.</p>'; return; }
+      el.innerHTML = notes.map(n => `
+        <div class="ticket-note ${n.note_type !== 'note' ? 'system' : ''}">
+          <div class="ticket-note-meta">${n.author_email ? esc(n.author_email) + ' · ' : ''}${new Date(n.created_at).toLocaleString()}</div>
+          ${esc(n.body)}
+        </div>
+      `).join('');
+    }
+
+    async function updateTicket() {
+      if (!activeTicketId) return;
+      const status      = document.getElementById('ticketModalStatus').value;
+      const assignedRaw  = document.getElementById('ticketModalAssignee').value;
+      const assigned_to  = assignedRaw ? parseInt(assignedRaw, 10) : null;
+
+      const r = await fetch(`/api/tickets/${activeTicketId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status, assigned_to })
+      });
+      if (r.ok) {
+        showToast('Ticket updated', 'success');
+        await loadTickets();
+        openTicketModal(activeTicketId);
+      } else {
+        showToast('Failed to update ticket', 'error');
+      }
+    }
+
+    async function addTicketNote() {
+      const body = document.getElementById('ticketNoteBody').value.trim();
+      if (!body || !activeTicketId) return;
+
+      const r = await fetch(`/api/tickets/${activeTicketId}/notes`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ body })
+      });
+      if (r.ok) {
+        document.getElementById('ticketNoteBody').value = '';
+        openTicketModal(activeTicketId);
+      } else {
+        showToast('Failed to add note', 'error');
+      }
+    }
+
+    // ── Staff ─────────────────────────────────────────────────────────────────
+    async function loadStaff() {
+      const r = await fetch('/api/staff');
+      if (!r.ok) return; // agents can't see this — sidebar already hides it
+      const d = await r.json();
+      staff = d.staff || [];
+      renderStaffTable();
+    }
+
+    function renderStaffTable() {
+      const tbody = document.getElementById('staffTableBody');
+      if (!staff.length) {
+        tbody.innerHTML = `<tr><td colspan="5" class="empty-table"><p>No staff accounts yet.</p></td></tr>`;
+        return;
+      }
+      tbody.innerHTML = staff.map(s => `
+        <tr>
+          <td class="post-title-cell">${esc(s.email)}</td>
+          <td>${esc(s.name || '—')}</td>
+          <td><span class="post-tag-pill">${esc(s.role)}</span></td>
+          <td>${new Date(s.created_at).toLocaleDateString()}</td>
+          <td>
+            ${s.role === 'super_admin' || s.email === currentEmail
+              ? ''
+              : `<button class="btn-sm btn-danger" onclick="deleteStaff(${s.id}, '${esc(s.email)}')">Delete</button>`}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function addStaff() {
+      const email    = document.getElementById('staffEmail').value.trim();
+      const name     = document.getElementById('staffName').value.trim();
+      const password = document.getElementById('staffPassword').value;
+
+      if (!email || !password) { showToast('Email and password are required', 'error'); return; }
+
+      const r = await fetch('/api/staff', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, name, password })
+      });
+      const d = await r.json();
+      if (r.ok) {
+        document.getElementById('staffEmail').value = '';
+        document.getElementById('staffName').value = '';
+        document.getElementById('staffPassword').value = '';
+        await loadStaff();
+        showToast('Agent added', 'success');
+      } else {
+        showToast(d.error || 'Failed to add agent', 'error');
+      }
+    }
+
+    async function deleteStaff(id, email) {
+      if (!confirm(`Remove ${email}'s access? This cannot be undone.`)) return;
+      const r = await fetch(`/api/staff/${id}`, { method: 'DELETE' });
+      if (r.ok) {
+        await loadStaff();
+        showToast('Agent removed', 'success');
+      } else {
+        showToast('Failed to remove agent', 'error');
       }
     }
 

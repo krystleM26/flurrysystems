@@ -117,15 +117,22 @@ function writeManifest(posts) {
   fs.writeFileSync(MANIFEST_PATH, JSON.stringify(posts, null, 2));
 }
 
-// List all posts (public)
+// List published posts (public) — drafts never appear here
 app.get('/api/posts', (_req, res) => {
+  res.json(readManifest().filter(p => !p.status || p.status === 'published'));
+});
+
+// List every post including drafts (admin only)
+app.get('/api/posts/all', requireSuperAdmin, (_req, res) => {
   res.json(readManifest());
 });
 
-// Create a post (admin only)
+// Create a post — draft or published (admin only)
 app.post('/api/posts', requireSuperAdmin, (req, res) => {
   const { title, excerpt, tag, content } = req.body;
-  if (!title || !content) return res.status(400).json({ error: 'Title and content are required' });
+  const status = req.body.status === 'draft' ? 'draft' : 'published';
+  if (!title) return res.status(400).json({ error: 'Title is required' });
+  if (status === 'published' && !content) return res.status(400).json({ error: 'Content is required to publish' });
 
   const id   = Date.now();
   const slug = title
@@ -139,23 +146,26 @@ app.post('/api/posts', requireSuperAdmin, (req, res) => {
   const date     = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   const postTag  = (tag || 'General').trim();
 
-  // Write the individual post page
+  // Write the individual post page (written even for drafts so the admin's
+  // "View" preview works — the file just isn't linked from anywhere public)
   if (!fs.existsSync(POSTS_DIR)) fs.mkdirSync(POSTS_DIR, { recursive: true });
-  fs.writeFileSync(path.join(POSTS_DIR, filename), buildPostPage({ title, excerpt, tag: postTag, content, date }));
+  fs.writeFileSync(path.join(POSTS_DIR, filename), buildPostPage({ title, excerpt, tag: postTag, content: content || '', date }));
 
   // Prepend to manifest (newest first)
   const manifest = readManifest();
-  manifest.unshift({ id, slug, filename, title, excerpt: excerpt || '', tag: postTag, date });
+  manifest.unshift({ id, slug, filename, title, excerpt: excerpt || '', tag: postTag, date, status });
   writeManifest(manifest);
 
   res.json({ success: true, post: manifest[0] });
 });
 
-// Update a post (admin only)
+// Update a post — draft or published (admin only)
 app.put('/api/posts/:id', requireSuperAdmin, (req, res) => {
   const id = parseInt(req.params.id, 10);
   const { title, excerpt, tag, content } = req.body;
-  if (!title || !content) return res.status(400).json({ error: 'Title and content are required' });
+  const status = req.body.status === 'draft' ? 'draft' : 'published';
+  if (!title) return res.status(400).json({ error: 'Title is required' });
+  if (status === 'published' && !content) return res.status(400).json({ error: 'Content is required to publish' });
 
   const manifest = readManifest();
   const idx = manifest.findIndex(p => p.id === id);
@@ -167,10 +177,10 @@ app.put('/api/posts/:id', requireSuperAdmin, (req, res) => {
   // Rewrite the post page
   fs.writeFileSync(
     path.join(POSTS_DIR, post.filename),
-    buildPostPage({ title, excerpt, tag: postTag, content, date: post.date })
+    buildPostPage({ title, excerpt, tag: postTag, content: content || '', date: post.date })
   );
 
-  manifest[idx] = { ...post, title, excerpt: excerpt || '', tag: postTag };
+  manifest[idx] = { ...post, title, excerpt: excerpt || '', tag: postTag, status };
   writeManifest(manifest);
 
   res.json({ success: true, post: manifest[idx] });
